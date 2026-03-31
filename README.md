@@ -116,17 +116,6 @@ README.md
 
 ---
 
-## Team Workflow
-
-- **Main branch**: protected; PR required
-- **Feature branches**: `feature/<name>-<topic>`
-- **PR expectations**:
-  - concise description
-  - screenshots for GUI changes
-  - notes on any protocol changes (client/server message formats)
-
----
-
 ## Project Status
 
 - [ ] Protocol design (message types + serialization)
