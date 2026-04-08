@@ -216,7 +216,7 @@ These areas may require review or fallback behavior:
 
 ---
 
-## Team Work Split (5 People)
+## Team Work Split
 
 To keep the project organized and make sure all CIT 325 requirements are covered, the work is divided by subsystem ownership rather than vague role titles. Each person owns one major area of the project and is responsible for implementation, testing, comments, and integration support for that area.
 
