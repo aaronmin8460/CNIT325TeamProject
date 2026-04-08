@@ -37,7 +37,7 @@ Fixed UI text will be localized using Java internationalization tools:
 - `ResourceBundle`
 - `.properties` files such as:
   - `messages_en.properties`
-  - `messages_ko.properties`
+  - `messages_es.properties`
 
 This covers text such as:
 
