@@ -216,6 +216,43 @@ These areas may require review or fallback behavior:
 
 ---
 
+## Team Work Split (5 People)
+
+To keep the project organized and make sure all CIT 325 requirements are covered, the work is divided by subsystem ownership rather than vague role titles. Each person owns one major area of the project and is responsible for implementation, testing, comments, and integration support for that area.
+
+| Person       | Main Ownership                                   | Key Classes / Features                                                                                                                                                       | Why This Fits                                                             |
+| ------------ | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| **Person 1** | **Core Object Design Lead**                      | `User`, `Student`, `Instructor`, `Question`, `MCQQuestion`, `TrueFalseQuestion`, `ShortAnswerQuestion`, `Answer`, interface design, UML                                      | Covers the core class structure, inheritance, and object design           |
+| **Person 2** | **Server + Networking Lead**                     | `Server`, socket handling, `Message`, `QuestionMessage`, `AnswerMessage`, `AuthMessage`, `ResultMessage`, protocol design                                                    | Covers the distributed/socket requirement                                 |
+| **Person 3** | **GUI / Client Lead**                            | `LoginFrame`, `ConnectFrame`, `QuizFrame`, `ResultFrame`, `AssignmentFrame`, Swing/AWT event handling                                                                        | Covers the graphical interface and demo side                              |
+| **Person 4** | **AWS + Data / Assignment Lead**                 | `AwsStorageService`, `Assignment`, `ClassList`, attempt history, syncing, progress tracking                                                                                  | Covers storage, assignments, classlists, and external service integration |
+| **Person 5** | **Internationalization + Translation + QA Lead** | `LocalizationManager`, `TranslationService`, `TranslationCache`, `messages_en.properties`, `messages_es.properties`, `GeoService`, `LocationPolicy`, testing, README cleanup | Covers i18n requirement, second external interface, and final polish      |
+
+### Requirement Coverage by Owner
+
+| Requirement                             | Assigned To             |
+| --------------------------------------- | ----------------------- |
+| 10+ classes / object design             | Person 1                |
+| Inheritance relationships               | Person 1                |
+| Distributed element with sockets        | Person 2                |
+| GUI                                     | Person 3                |
+| External interface #1 (AWS)             | Person 4                |
+| External interface #2 (Geo/Translation) | Person 5                |
+| Internationalization (2 locales)        | Person 5                |
+| Testing / integration / final cleanup   | Shared, led by Person 5 |
+
+### Shared Team Responsibilities
+
+Even though each member has a main ownership area, all team members should also:
+
+- contribute code through their own branch
+- comment and document their own work
+- test at least one other module
+- report their own time accurately
+- participate in the final presentation
+
+---
+
 ## How to Run (Placeholder)
 
 > We will update this section once the first runnable version exists.
