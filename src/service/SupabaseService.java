@@ -44,9 +44,25 @@ public class SupabaseService implements DataService {
     private String apiKey;
 
     public SupabaseService() {
+        String url = System.getenv("SUPABASE_URL");
+        String key = System.getenv("SUPABASE_SERVICE_KEY");
 
-        this(System.getenv("SUPABASE_URL"), System.getenv("SUPABASE_SERVICE_KEY"));
+        if (url == null || url.length() == 0 || key == null || key.length() == 0) {
+            try {
+                java.util.Properties props = new java.util.Properties();
+                java.io.FileInputStream file = new java.io.FileInputStream("supabase.properties");
+                props.load(file);
+                file.close();
 
+                url = props.getProperty("SUPABASE_URL");
+                key = props.getProperty("SUPABASE_SERVICE_KEY");
+            } catch (Exception e) {
+                System.out.println("supabase.properties not found. Using environment variables only.");
+            }
+        }
+
+        this.projectUrl = normalizeProjectUrl(url);
+        this.apiKey = key;
     }
 
     public SupabaseService(String projectUrl, String apiKey) {

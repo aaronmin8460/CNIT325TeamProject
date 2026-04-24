@@ -1,22 +1,9 @@
 package client;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JTextArea;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.*;
 
 import model.Instructor;
 
@@ -104,7 +91,7 @@ public class InstructorFrame extends JFrame implements ActionListener, ServerMes
 
         this.resultsButton = new JButton("Results");
 
-        this.resultsTextArea = new JTextArea();
+        this.resultsTextArea = new JTextArea(15, 60);
 
         this.currentClassCode = "";
 
@@ -161,9 +148,15 @@ public class InstructorFrame extends JFrame implements ActionListener, ServerMes
         questionPanel.add(new JLabel(getText("label.correct.answer", "Correct Answer:")));
         questionPanel.add(correctAnswerField);
 
+        JScrollPane resultsScrollPane;
+
         resultsTextArea.setEditable(false);
         resultsTextArea.setLineWrap(true);
         resultsTextArea.setWrapStyleWord(true);
+
+        resultsScrollPane = new JScrollPane(resultsTextArea);
+        resultsScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        resultsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         buttonPanel = new JPanel(new FlowLayout());
         buttonPanel.add(createQuestionButton);
@@ -171,7 +164,7 @@ public class InstructorFrame extends JFrame implements ActionListener, ServerMes
 
         resultsPanel = new JPanel(new BorderLayout());
         resultsPanel.add(buttonPanel, BorderLayout.NORTH);
-        resultsPanel.add(resultsTextArea, BorderLayout.CENTER);
+        resultsPanel.add(resultsScrollPane, BorderLayout.CENTER);
 
         add(classPanel, BorderLayout.NORTH);
         add(questionPanel, BorderLayout.CENTER);
@@ -281,15 +274,14 @@ public class InstructorFrame extends JFrame implements ActionListener, ServerMes
         }
 
         clientConnection.sendCreateQuestion(
-            currentClassCode,
-            questionType,
-            prompt,
-            choiceA,
-            choiceB,
-            choiceC,
-            choiceD,
-            correctAnswer
-        );
+                currentClassCode,
+                questionType,
+                prompt,
+                choiceA,
+                choiceB,
+                choiceC,
+                choiceD,
+                correctAnswer);
 
         appendResult(getText("status.question.sent", "Question sent to server."));
 
@@ -327,7 +319,7 @@ public class InstructorFrame extends JFrame implements ActionListener, ServerMes
                 currentClassCode = parts[2];
                 classCodeLabel.setText(parts[2]);
                 appendResult(getText("status.class.created", "Class created:")
-                    + " " + parts[1] + " (" + parts[2] + ")");
+                        + " " + parts[1] + " (" + parts[2] + ")");
             }
             return;
         }
@@ -378,9 +370,8 @@ public class InstructorFrame extends JFrame implements ActionListener, ServerMes
     }
 
     private void appendResult(String text) {
-
         resultsTextArea.append(text + "\n");
-
+        resultsTextArea.setCaretPosition(resultsTextArea.getDocument().getLength());
     }
 
     private String formatResultsText(String text) {
@@ -402,72 +393,140 @@ public class InstructorFrame extends JFrame implements ActionListener, ServerMes
 
     }
 
-    public Instructor getInstructor() { return instructor; }
+    public Instructor getInstructor() {
+        return instructor;
+    }
 
-    public void setInstructor(Instructor instructor) { this.instructor = instructor; }
+    public void setInstructor(Instructor instructor) {
+        this.instructor = instructor;
+    }
 
-    public ClientConnection getClientConnection() { return clientConnection; }
+    public ClientConnection getClientConnection() {
+        return clientConnection;
+    }
 
-    public void setClientConnection(ClientConnection clientConnection) { this.clientConnection = clientConnection; }
+    public void setClientConnection(ClientConnection clientConnection) {
+        this.clientConnection = clientConnection;
+    }
 
-    public ResourceBundle getMessages() { return messages; }
+    public ResourceBundle getMessages() {
+        return messages;
+    }
 
-    public void setMessages(ResourceBundle messages) { this.messages = messages; }
+    public void setMessages(ResourceBundle messages) {
+        this.messages = messages;
+    }
 
-    public JTextField getClassNameField() { return classNameField; }
+    public JTextField getClassNameField() {
+        return classNameField;
+    }
 
-    public void setClassNameField(JTextField classNameField) { this.classNameField = classNameField; }
+    public void setClassNameField(JTextField classNameField) {
+        this.classNameField = classNameField;
+    }
 
-    public JButton getCreateClassButton() { return createClassButton; }
+    public JButton getCreateClassButton() {
+        return createClassButton;
+    }
 
-    public void setCreateClassButton(JButton createClassButton) { this.createClassButton = createClassButton; }
+    public void setCreateClassButton(JButton createClassButton) {
+        this.createClassButton = createClassButton;
+    }
 
-    public JLabel getClassCodeLabel() { return classCodeLabel; }
+    public JLabel getClassCodeLabel() {
+        return classCodeLabel;
+    }
 
-    public void setClassCodeLabel(JLabel classCodeLabel) { this.classCodeLabel = classCodeLabel; }
+    public void setClassCodeLabel(JLabel classCodeLabel) {
+        this.classCodeLabel = classCodeLabel;
+    }
 
-    public JComboBox<String> getQuestionTypeBox() { return questionTypeBox; }
+    public JComboBox<String> getQuestionTypeBox() {
+        return questionTypeBox;
+    }
 
-    public void setQuestionTypeBox(JComboBox<String> questionTypeBox) { this.questionTypeBox = questionTypeBox; }
+    public void setQuestionTypeBox(JComboBox<String> questionTypeBox) {
+        this.questionTypeBox = questionTypeBox;
+    }
 
-    public JTextField getPromptField() { return promptField; }
+    public JTextField getPromptField() {
+        return promptField;
+    }
 
-    public void setPromptField(JTextField promptField) { this.promptField = promptField; }
+    public void setPromptField(JTextField promptField) {
+        this.promptField = promptField;
+    }
 
-    public JTextField getChoiceAField() { return choiceAField; }
+    public JTextField getChoiceAField() {
+        return choiceAField;
+    }
 
-    public void setChoiceAField(JTextField choiceAField) { this.choiceAField = choiceAField; }
+    public void setChoiceAField(JTextField choiceAField) {
+        this.choiceAField = choiceAField;
+    }
 
-    public JTextField getChoiceBField() { return choiceBField; }
+    public JTextField getChoiceBField() {
+        return choiceBField;
+    }
 
-    public void setChoiceBField(JTextField choiceBField) { this.choiceBField = choiceBField; }
+    public void setChoiceBField(JTextField choiceBField) {
+        this.choiceBField = choiceBField;
+    }
 
-    public JTextField getChoiceCField() { return choiceCField; }
+    public JTextField getChoiceCField() {
+        return choiceCField;
+    }
 
-    public void setChoiceCField(JTextField choiceCField) { this.choiceCField = choiceCField; }
+    public void setChoiceCField(JTextField choiceCField) {
+        this.choiceCField = choiceCField;
+    }
 
-    public JTextField getChoiceDField() { return choiceDField; }
+    public JTextField getChoiceDField() {
+        return choiceDField;
+    }
 
-    public void setChoiceDField(JTextField choiceDField) { this.choiceDField = choiceDField; }
+    public void setChoiceDField(JTextField choiceDField) {
+        this.choiceDField = choiceDField;
+    }
 
-    public JTextField getCorrectAnswerField() { return correctAnswerField; }
+    public JTextField getCorrectAnswerField() {
+        return correctAnswerField;
+    }
 
-    public void setCorrectAnswerField(JTextField correctAnswerField) { this.correctAnswerField = correctAnswerField; }
+    public void setCorrectAnswerField(JTextField correctAnswerField) {
+        this.correctAnswerField = correctAnswerField;
+    }
 
-    public JButton getCreateQuestionButton() { return createQuestionButton; }
+    public JButton getCreateQuestionButton() {
+        return createQuestionButton;
+    }
 
-    public void setCreateQuestionButton(JButton createQuestionButton) { this.createQuestionButton = createQuestionButton; }
+    public void setCreateQuestionButton(JButton createQuestionButton) {
+        this.createQuestionButton = createQuestionButton;
+    }
 
-    public JButton getResultsButton() { return resultsButton; }
+    public JButton getResultsButton() {
+        return resultsButton;
+    }
 
-    public void setResultsButton(JButton resultsButton) { this.resultsButton = resultsButton; }
+    public void setResultsButton(JButton resultsButton) {
+        this.resultsButton = resultsButton;
+    }
 
-    public JTextArea getResultsTextArea() { return resultsTextArea; }
+    public JTextArea getResultsTextArea() {
+        return resultsTextArea;
+    }
 
-    public void setResultsTextArea(JTextArea resultsTextArea) { this.resultsTextArea = resultsTextArea; }
+    public void setResultsTextArea(JTextArea resultsTextArea) {
+        this.resultsTextArea = resultsTextArea;
+    }
 
-    public String getCurrentClassCode() { return currentClassCode; }
+    public String getCurrentClassCode() {
+        return currentClassCode;
+    }
 
-    public void setCurrentClassCode(String currentClassCode) { this.currentClassCode = currentClassCode; }
+    public void setCurrentClassCode(String currentClassCode) {
+        this.currentClassCode = currentClassCode;
+    }
 
 }
