@@ -7,6 +7,8 @@ import java.util.ArrayList;
  */
 public class CourseClass {
 
+    private String classId;
+
     private String classCode;
 
     private String className;
@@ -25,6 +27,8 @@ public class CourseClass {
 
     public CourseClass(String classCode, String className) {
 
+        this.classId = "";
+
         this.classCode = classCode;
 
         this.className = className;
@@ -34,6 +38,10 @@ public class CourseClass {
         this.questions = new ArrayList<Question>();
 
     }
+
+    public String getClassId() { return classId; }
+
+    public void setClassId(String classId) { this.classId = classId; }
 
     public String getClassCode() { return classCode; }
 

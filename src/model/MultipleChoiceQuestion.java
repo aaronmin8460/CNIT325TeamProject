@@ -13,7 +13,17 @@ public class MultipleChoiceQuestion extends Question {
 
     public MultipleChoiceQuestion() {
 
-        this(0, "", 0, "");
+        this("", "", 0, "");
+
+    }
+
+    public MultipleChoiceQuestion(String questionId, String prompt, int points, String classCode) {
+
+        super(questionId, prompt, points, classCode);
+
+        this.choices = new ArrayList<String>();
+
+        this.correctAnswer = "";
 
     }
 

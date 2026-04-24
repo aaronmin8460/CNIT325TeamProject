@@ -315,12 +315,14 @@ public class ClientHandler extends Thread {
 
     private void handleSubmitAnswer(String[] parts) {
 
-        int questionId;
+        String questionId;
         Question question;
         String answer;
         boolean correct;
         Attempt attempt;
         String correctAnswer;
+        int i;
+        StringBuilder debugBuilder;
 
         if (!(currentUser instanceof Student)) {
             sendMessage("ERROR|Only students can submit answers");
@@ -332,9 +334,21 @@ public class ClientHandler extends Thread {
             return;
         }
 
-        questionId = parseNumber(parts[1]);
+        debugBuilder = new StringBuilder();
+        debugBuilder.append("Server received SUBMIT_ANSWER parts:");
 
-        if (questionId <= 0) {
+        for (i = 0; i < parts.length; i++) {
+            debugBuilder.append(" [");
+            debugBuilder.append(i);
+            debugBuilder.append("]=");
+            debugBuilder.append(parts[i]);
+        }
+
+        System.out.println(debugBuilder.toString());
+
+        questionId = parts[1];
+
+        if (questionId == null || questionId.length() == 0) {
             sendMessage("ERROR|Invalid question id");
             return;
         }
@@ -343,6 +357,16 @@ public class ClientHandler extends Thread {
 
         if (question == null) {
             sendMessage("ERROR|Question not found");
+            return;
+        }
+
+        if (currentUser.getUserId() == null || currentUser.getUserId().length() == 0) {
+            sendMessage("ERROR|Invalid student id");
+            return;
+        }
+
+        if (question.getQuestionId() == null || question.getQuestionId().length() == 0) {
+            sendMessage("ERROR|Invalid question id");
             return;
         }
 
@@ -362,6 +386,11 @@ public class ClientHandler extends Thread {
             attempt.setPointsEarned(0);
         }
 
+        System.out.println("Attempt save current user id: " + currentUser.getUserId());
+        System.out.println("Attempt save question id: " + question.getQuestionId());
+        System.out.println("Attempt save submitted answer: " + answer);
+        System.out.println("Attempt save correct value: " + correct);
+
         quizServer.getDataService().saveAttempt(attempt);
 
         sendMessage("ANSWER_RESULT|" + questionId + "|" + correct + "|" + cleanText(correctAnswer));
@@ -376,7 +405,7 @@ public class ClientHandler extends Thread {
         int correctCount;
         int i;
         Attempt attempt;
-        String resultsText;
+        StringBuilder resultsBuilder;
 
         if (parts.length < 2) {
             sendMessage("ERROR|GET_RESULTS command needs a class code");
@@ -402,12 +431,31 @@ public class ClientHandler extends Thread {
             }
         }
 
-        resultsText = "Class " + courseClass.getClassName()
-            + " has " + classAttempts.size()
-            + " attempts. Correct: " + correctCount
-            + ". Incorrect: " + (classAttempts.size() - correctCount) + ".";
+        resultsBuilder = new StringBuilder();
+        resultsBuilder.append("Class ");
+        resultsBuilder.append(courseClass.getClassName());
+        resultsBuilder.append(" has ");
+        resultsBuilder.append(classAttempts.size());
+        resultsBuilder.append(" attempts. Correct: ");
+        resultsBuilder.append(correctCount);
+        resultsBuilder.append(". Incorrect: ");
+        resultsBuilder.append(classAttempts.size() - correctCount);
+        resultsBuilder.append(".");
 
-        sendMessage("RESULTS_DATA|" + cleanText(resultsText));
+        for (i = 0; i < classAttempts.size(); i++) {
+            attempt = classAttempts.get(i);
+            resultsBuilder.append(" Question: ");
+            resultsBuilder.append(getAttemptQuestionText(attempt));
+            resultsBuilder.append(" Student: ");
+            resultsBuilder.append(getAttemptStudentText(attempt));
+            resultsBuilder.append(" Answer: ");
+            resultsBuilder.append(getAttemptAnswerText(attempt));
+            resultsBuilder.append(" Correct: ");
+            resultsBuilder.append(attempt.isCorrect());
+            resultsBuilder.append(".");
+        }
+
+        sendMessage("RESULTS_DATA|" + cleanText(resultsBuilder.toString()));
 
     }
 
@@ -451,20 +499,6 @@ public class ClientHandler extends Thread {
 
     }
 
-    private int parseNumber(String text) {
-
-        try {
-
-            return Integer.parseInt(text);
-
-        } catch (NumberFormatException e) {
-
-            return -1;
-
-        }
-
-    }
-
     private String cleanText(String text) {
 
         String safeText;
@@ -479,6 +513,73 @@ public class ClientHandler extends Thread {
         safeText = safeText.replace("\r", " ");
 
         return safeText;
+
+    }
+
+    private String getAttemptQuestionText(Attempt attempt) {
+
+        Question question;
+
+        if (attempt == null) {
+            return "Unknown question";
+        }
+
+        question = attempt.getQuestion();
+
+        if (question == null) {
+            return "Unknown question";
+        }
+
+        if (question.getPrompt() == null || question.getPrompt().length() == 0) {
+            return "Unknown question";
+        }
+
+        return cleanText(question.getPrompt());
+
+    }
+
+    private String getAttemptStudentText(Attempt attempt) {
+
+        Student student;
+        String name;
+        String email;
+
+        if (attempt == null) {
+            return "Unknown student";
+        }
+
+        student = attempt.getStudent();
+
+        if (student == null) {
+            return "Unknown student";
+        }
+
+        name = student.getName();
+        email = student.getEmail();
+
+        if (name != null && name.length() > 0) {
+            if (email != null && email.length() > 0) {
+                return cleanText(name + " / " + email);
+            }
+
+            return cleanText(name);
+        }
+
+        if (email != null && email.length() > 0) {
+            return cleanText(email);
+        }
+
+        return "Unknown student";
+
+    }
+
+    private String getAttemptAnswerText(Attempt attempt) {
+
+        if (attempt == null) {
+            return "";
+        }
+
+        return cleanText(attempt.getSubmittedAnswer());
 
     }
 

@@ -206,9 +206,21 @@ public class ClientConnection {
 
     }
 
+    public void sendSubmitAnswer(String questionId, String answer) {
+
+        String message;
+
+        message = "SUBMIT_ANSWER|" + cleanText(questionId) + "|" + cleanText(answer);
+
+        System.out.println("SUBMIT_ANSWER message: " + message);
+
+        sendCommand(message);
+
+    }
+
     public void sendSubmitAnswer(int questionId, String answer) {
 
-        sendCommand("SUBMIT_ANSWER|" + questionId + "|" + cleanText(answer));
+        sendSubmitAnswer(String.valueOf(questionId), answer);
 
     }
 

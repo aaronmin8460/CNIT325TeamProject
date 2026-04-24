@@ -163,17 +163,19 @@ The current `SupabaseService` expects these `public` tables:
 
 - `users`
 - `classes`
-- `class_memberships`
+- `class_members`
 - `questions`
 - `attempts`
 
 Expected columns:
 
-- `users`: `id`, `email`, `password`, `name`, `role`, `instructor_code`, `student_number`
-- `classes`: `class_code`, `class_name`, `instructor_id`
-- `class_memberships`: `id`, `class_code`, `student_id`
+- `users`: `user_id`, `name`, `email`, `password`, `role`
+- `classes`: `class_id`, `instructor_id`, `class_name`, `class_code`, `created_at`
+- `class_members`: `class_id`, `student_id`, `joined_at`
 - `questions`: `question_id`, `class_code`, `type`, `prompt`, `choice_a`, `choice_b`, `choice_c`, `choice_d`, `correct_answer`, `points`
 - `attempts`: `attempt_id`, `class_code`, `question_id`, `student_id`, `submitted_answer`, `correct`, `points_earned`
+
+For Supabase mode, `user_id`, `instructor_id`, and `student_id` can be UUID strings.
 
 If your Supabase table names or column names are different, update `SupabaseService.java` to match your schema.
 
@@ -190,11 +192,3 @@ These methods now call Supabase REST:
 - `getAttemptsForClass`
 
 `getQuestionsForClass` is also implemented so the service matches the current interface.
-
-## Why Geo Location Was Removed
-
-Geo location was intentionally removed from this rebuild. The earlier project idea included location checks, but that added complexity that does not fit the simpler CNIT 325 lab-style version. The current version focuses on Swing, sockets, inheritance, interfaces, and readable Java code.
-
-## Why MockDataService Is Used Now
-
-`MockDataService` is still the easiest demo and testing option. It uses simple Java collections like `ArrayList` and `HashMap`, includes built-in test users, and lets the project run even when Supabase is not configured.

@@ -15,11 +15,11 @@ public class Student extends User {
 
     public Student() {
 
-        this(0, "", "", "", "", "", "");
+        this("", "", "", "", "", "", "");
 
     }
 
-    public Student(int userId, String email, String password, String name, String role, String studentNumber, String classCode) {
+    public Student(String userId, String email, String password, String name, String role, String studentNumber, String classCode) {
 
         super(userId, email, password, name, role);
 
@@ -28,6 +28,18 @@ public class Student extends User {
         this.classCode = classCode;
 
         this.attempts = new ArrayList<Attempt>();
+
+    }
+
+    public Student(int userId, String email, String password, String name, String role, String studentNumber, String classCode) {
+
+        this(String.valueOf(userId), email, password, name, role, studentNumber, classCode);
+
+    }
+
+    public Student(String userId, String name, String email, String password) {
+
+        this(userId, email, password, name, "student", "", "");
 
     }
 

@@ -9,7 +9,15 @@ public class ShortAnswerQuestion extends Question {
 
     public ShortAnswerQuestion() {
 
-        this(0, "", 0, "");
+        this("", "", 0, "");
+
+    }
+
+    public ShortAnswerQuestion(String questionId, String prompt, int points, String classCode) {
+
+        super(questionId, prompt, points, classCode);
+
+        this.sampleAnswer = "";
 
     }
 

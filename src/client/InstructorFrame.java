@@ -334,7 +334,7 @@ public class InstructorFrame extends JFrame implements ActionListener, ServerMes
 
         if ("RESULTS_DATA".equals(parts[0])) {
             if (parts.length >= 2) {
-                appendResult(parts[1]);
+                appendResult(formatResultsText(parts[1]));
             }
             return;
         }
@@ -380,6 +380,25 @@ public class InstructorFrame extends JFrame implements ActionListener, ServerMes
     private void appendResult(String text) {
 
         resultsTextArea.append(text + "\n");
+
+    }
+
+    private String formatResultsText(String text) {
+
+        String formattedText;
+
+        if (text == null) {
+            return "";
+        }
+
+        formattedText = text;
+        formattedText = formattedText.replace(". Question: ", ".\nQuestion: ");
+        formattedText = formattedText.replace(" Student: ", "\nStudent: ");
+        formattedText = formattedText.replace(" Answer: ", "\nAnswer: ");
+        formattedText = formattedText.replace(" Correct: true.", "\nCorrect: true.\n");
+        formattedText = formattedText.replace(" Correct: false.", "\nCorrect: false.\n");
+
+        return formattedText;
 
     }
 

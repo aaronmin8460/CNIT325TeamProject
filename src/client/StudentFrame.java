@@ -158,6 +158,8 @@ public class StudentFrame extends JFrame implements ActionListener, ServerMessag
 
         String[] parts;
         Question question;
+        int i;
+        StringBuilder debugBuilder;
 
         if (message == null) {
             return;
@@ -185,6 +187,18 @@ public class StudentFrame extends JFrame implements ActionListener, ServerMessag
         }
 
         if ("QUESTION_PUSH".equals(parts[0])) {
+            debugBuilder = new StringBuilder();
+            debugBuilder.append("StudentFrame received QUESTION_PUSH parts:");
+
+            for (i = 0; i < parts.length; i++) {
+                debugBuilder.append(" [");
+                debugBuilder.append(i);
+                debugBuilder.append("]=");
+                debugBuilder.append(parts[i]);
+            }
+
+            System.out.println(debugBuilder.toString());
+
             question = buildQuestion(parts);
 
             if (question != null) {
@@ -199,15 +213,7 @@ public class StudentFrame extends JFrame implements ActionListener, ServerMessag
 
         if ("ANSWER_RESULT".equals(parts[0])) {
             if (parts.length >= 4) {
-                appendStatus(
-                    getText("status.question.result", "Question")
-                    + " " + parts[1]
-                    + " " + getText("status.question.result.middle", "result:")
-                    + " " + parts[2]
-                    + ". "
-                    + getText("status.correct.answer", "Correct answer:")
-                    + " " + parts[3]
-                );
+                appendStatus(formatAnswerResult(parts[2], parts[3]));
             }
             return;
         }
@@ -231,7 +237,7 @@ public class StudentFrame extends JFrame implements ActionListener, ServerMessag
 
     private Question buildQuestion(String[] parts) {
 
-        int questionId;
+        String questionId;
         String classCode;
         String type;
         String prompt;
@@ -244,7 +250,12 @@ public class StudentFrame extends JFrame implements ActionListener, ServerMessag
             return null;
         }
 
-        questionId = parseNumber(parts[1]);
+        questionId = parts[1];
+
+        if (questionId == null || questionId.length() == 0) {
+            return null;
+        }
+
         classCode = parts[2];
         type = parts[3];
         prompt = parts[4];
@@ -293,23 +304,34 @@ public class StudentFrame extends JFrame implements ActionListener, ServerMessag
 
     }
 
-    private int parseNumber(String text) {
-
-        try {
-
-            return Integer.parseInt(text);
-
-        } catch (NumberFormatException e) {
-
-            return 0;
-
-        }
-
-    }
-
     private void appendStatus(String text) {
 
         statusTextArea.append(text + "\n");
+
+    }
+
+    private String formatAnswerResult(String correctValue, String correctAnswer) {
+
+        StringBuilder builder;
+        String resultText;
+
+        builder = new StringBuilder();
+
+        if ("true".equalsIgnoreCase(correctValue)) {
+            resultText = getText("status.answer.correct", "Correct");
+        } else {
+            resultText = getText("status.answer.incorrect", "Incorrect");
+        }
+
+        builder.append(getText("status.answer.result", "Answer result:"));
+        builder.append(" ");
+        builder.append(resultText);
+        builder.append(". ");
+        builder.append(getText("status.correct.answer", "Correct answer:"));
+        builder.append(" ");
+        builder.append(correctAnswer);
+
+        return builder.toString();
 
     }
 

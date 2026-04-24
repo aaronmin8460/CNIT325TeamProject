@@ -5,7 +5,7 @@ package model;
  */
 public class User {
 
-    private int userId;
+    private String userId;
 
     private String email;
 
@@ -17,11 +17,11 @@ public class User {
 
     public User() {
 
-        this(0, "", "", "", "");
+        this("", "", "", "", "");
 
     }
 
-    public User(int userId, String email, String password, String name, String role) {
+    public User(String userId, String email, String password, String name, String role) {
 
         this.userId = userId;
 
@@ -35,9 +35,17 @@ public class User {
 
     }
 
-    public int getUserId() { return userId; }
+    public User(int userId, String email, String password, String name, String role) {
 
-    public void setUserId(int userId) { this.userId = userId; }
+        this(String.valueOf(userId), email, password, name, role);
+
+    }
+
+    public String getUserId() { return userId; }
+
+    public void setUserId(String userId) { this.userId = userId; }
+
+    public void setUserId(int userId) { this.userId = String.valueOf(userId); }
 
     public String getEmail() { return email; }
 

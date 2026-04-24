@@ -5,7 +5,7 @@ package model;
  */
 public abstract class Question {
 
-    private int questionId;
+    private String questionId;
 
     private String prompt;
 
@@ -15,11 +15,11 @@ public abstract class Question {
 
     public Question() {
 
-        this(0, "", 0, "");
+        this("", "", 0, "");
 
     }
 
-    public Question(int questionId, String prompt, int points, String classCode) {
+    public Question(String questionId, String prompt, int points, String classCode) {
 
         this.questionId = questionId;
 
@@ -31,9 +31,25 @@ public abstract class Question {
 
     }
 
-    public int getQuestionId() { return questionId; }
+    public Question(int questionId, String prompt, int points, String classCode) {
 
-    public void setQuestionId(int questionId) { this.questionId = questionId; }
+        this(String.valueOf(questionId), prompt, points, classCode);
+
+    }
+
+    public String getQuestionId() { return questionId; }
+
+    public void setQuestionId(String questionId) {
+
+        if (questionId == null) {
+            this.questionId = "";
+        } else {
+            this.questionId = questionId;
+        }
+
+    }
+
+    public void setQuestionId(int questionId) { this.questionId = String.valueOf(questionId); }
 
     public String getPrompt() { return prompt; }
 

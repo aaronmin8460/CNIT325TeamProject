@@ -13,17 +13,29 @@ public class Instructor extends User {
 
     public Instructor() {
 
-        this(0, "", "", "", "", "");
+        this("", "", "", "", "", "");
 
     }
 
-    public Instructor(int userId, String email, String password, String name, String role, String instructorCode) {
+    public Instructor(String userId, String email, String password, String name, String role, String instructorCode) {
 
         super(userId, email, password, name, role);
 
         this.instructorCode = instructorCode;
 
         this.classes = new ArrayList<CourseClass>();
+
+    }
+
+    public Instructor(int userId, String email, String password, String name, String role, String instructorCode) {
+
+        this(String.valueOf(userId), email, password, name, role, instructorCode);
+
+    }
+
+    public Instructor(String userId, String name, String email, String password) {
+
+        this(userId, email, password, name, "instructor", "");
 
     }
 

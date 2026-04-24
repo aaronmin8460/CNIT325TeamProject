@@ -193,6 +193,8 @@ public class QuizServer {
 
         message = buildQuestionPushMessage(question);
 
+        System.out.println("QUESTION_PUSH message: " + message);
+
         for (i = 0; i < handlersToSend.size(); i++) {
             clientHandler = handlersToSend.get(i);
             clientHandler.sendMessage(message);

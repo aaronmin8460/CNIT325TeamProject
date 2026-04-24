@@ -9,7 +9,15 @@ public class TrueFalseQuestion extends Question {
 
     public TrueFalseQuestion() {
 
-        this(0, "", 0, "");
+        this("", "", 0, "");
+
+    }
+
+    public TrueFalseQuestion(String questionId, String prompt, int points, String classCode) {
+
+        super(questionId, prompt, points, classCode);
+
+        this.correctAnswer = false;
 
     }
 

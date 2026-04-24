@@ -24,7 +24,7 @@ import model.User;
 
 /**
  * This class connects to Supabase with simple HTTP requests.
- * It expects public tables named users, classes, class_memberships,
+ * It expects public tables named users, classes, class_members,
  * questions, and attempts.
  */
 public class SupabaseService implements DataService {
@@ -33,7 +33,7 @@ public class SupabaseService implements DataService {
 
     private static final String CLASSES_TABLE = "classes";
 
-    private static final String CLASS_MEMBERSHIPS_TABLE = "class_memberships";
+    private static final String CLASS_MEMBERS_TABLE = "class_members";
 
     private static final String QUESTIONS_TABLE = "questions";
 
@@ -61,6 +61,7 @@ public class SupabaseService implements DataService {
     public User login(String email, String password) {
 
         String path;
+        String requestUrl;
         SupabaseResponse response;
         ArrayList<HashMap<String, String>> rows;
 
@@ -73,12 +74,19 @@ public class SupabaseService implements DataService {
         }
 
         path = USERS_TABLE
-            + "?select=id,email,password,name,role,instructor_code,student_number"
-            + "&email=eq." + encodeQueryValue(email)
-            + "&password=eq." + encodeQueryValue(password)
-            + "&limit=1";
+                + "?select=user_id,name,email,password,role"
+                + "&email=eq." + encodeQueryValue(email)
+                + "&password=eq." + encodeQueryValue(password)
+                + "&limit=1";
+
+        requestUrl = buildApiUrl(path);
+
+        System.out.println("Supabase login request URL: " + requestUrl);
 
         response = sendRequest("GET", path, null, null, "application/json");
+
+        System.out.println("Supabase login response code: " + response.getStatusCode());
+        System.out.println("Supabase login response body: " + response.getBody());
 
         if (!response.isSuccess()) {
             return null;
@@ -122,16 +130,17 @@ public class SupabaseService implements DataService {
         body.append(escapeJson(className));
         body.append("\",");
         body.append("\"instructor_id\":");
-        body.append(instructor.getUserId());
+        body.append("\"");
+        body.append(escapeJson(instructor.getUserId()));
+        body.append("\"");
         body.append("}");
 
         response = sendRequest(
-            "POST",
-            CLASSES_TABLE,
-            body.toString(),
-            "return=representation",
-            "application/json"
-        );
+                "POST",
+                CLASSES_TABLE,
+                body.toString(),
+                "return=representation",
+                "application/json");
 
         if (!response.isSuccess()) {
             return null;
@@ -156,7 +165,9 @@ public class SupabaseService implements DataService {
     @Override
     public boolean joinClass(String classCode, Student student) {
 
+        CourseClass courseClass;
         String path;
+        String requestUrl;
         StringBuilder body;
         SupabaseResponse response;
         ArrayList<HashMap<String, String>> rows;
@@ -169,17 +180,26 @@ public class SupabaseService implements DataService {
             return false;
         }
 
-        if (findClassByCode(classCode) == null) {
+        courseClass = findClassByCode(classCode);
+
+        if (courseClass == null) {
             return false;
         }
 
-        path = CLASS_MEMBERSHIPS_TABLE
-            + "?select=id"
-            + "&class_code=eq." + encodeQueryValue(classCode)
-            + "&student_id=eq." + student.getUserId()
-            + "&limit=1";
+        path = CLASS_MEMBERS_TABLE
+                + "?select=class_id,student_id"
+                + "&class_id=eq." + encodeQueryValue(courseClass.getClassId())
+                + "&student_id=eq." + encodeQueryValue(student.getUserId())
+                + "&limit=1";
+
+        requestUrl = buildApiUrl(path);
+
+        System.out.println("Supabase joinClass check request URL: " + requestUrl);
 
         response = sendRequest("GET", path, null, null, "application/json");
+
+        System.out.println("Supabase joinClass check response code: " + response.getStatusCode());
+        System.out.println("Supabase joinClass check response body: " + response.getBody());
 
         if (!response.isSuccess()) {
             return false;
@@ -193,20 +213,28 @@ public class SupabaseService implements DataService {
 
         body = new StringBuilder();
         body.append("{");
-        body.append("\"class_code\":\"");
-        body.append(escapeJson(classCode));
+        body.append("\"class_id\":\"");
+        body.append(escapeJson(courseClass.getClassId()));
         body.append("\",");
         body.append("\"student_id\":");
-        body.append(student.getUserId());
+        body.append("\"");
+        body.append(escapeJson(student.getUserId()));
+        body.append("\"");
         body.append("}");
 
+        requestUrl = buildApiUrl(CLASS_MEMBERS_TABLE);
+
+        System.out.println("Supabase joinClass insert request URL: " + requestUrl);
+
         response = sendRequest(
-            "POST",
-            CLASS_MEMBERSHIPS_TABLE,
-            body.toString(),
-            "return=representation",
-            "application/json"
-        );
+                "POST",
+                CLASS_MEMBERS_TABLE,
+                body.toString(),
+                "return=representation",
+                "application/json");
+
+        System.out.println("Supabase joinClass insert response code: " + response.getStatusCode());
+        System.out.println("Supabase joinClass insert response body: " + response.getBody());
 
         if (!response.isSuccess()) {
             return false;
@@ -222,6 +250,7 @@ public class SupabaseService implements DataService {
     public CourseClass findClassByCode(String classCode) {
 
         String path;
+        String requestUrl;
         SupabaseResponse response;
         ArrayList<HashMap<String, String>> rows;
 
@@ -234,11 +263,18 @@ public class SupabaseService implements DataService {
         }
 
         path = CLASSES_TABLE
-            + "?select=class_code,class_name,instructor_id"
-            + "&class_code=eq." + encodeQueryValue(classCode)
-            + "&limit=1";
+                + "?select=class_id,class_code,class_name,instructor_id"
+                + "&class_code=eq." + encodeQueryValue(classCode)
+                + "&limit=1";
+
+        requestUrl = buildApiUrl(path);
+
+        System.out.println("Supabase findClassByCode request URL: " + requestUrl);
 
         response = sendRequest("GET", path, null, null, "application/json");
+
+        System.out.println("Supabase findClassByCode response code: " + response.getStatusCode());
+        System.out.println("Supabase findClassByCode response body: " + response.getBody());
 
         if (!response.isSuccess()) {
             return null;
@@ -257,9 +293,11 @@ public class SupabaseService implements DataService {
     @Override
     public Question saveQuestion(String classCode, Question question) {
 
+        CourseClass courseClass;
         StringBuilder body;
         SupabaseResponse response;
         ArrayList<HashMap<String, String>> rows;
+        Question savedQuestion;
 
         if (!isConfigured()) {
             return null;
@@ -269,12 +307,32 @@ public class SupabaseService implements DataService {
             return null;
         }
 
+        courseClass = findClassByCode(classCode);
+
+        if (courseClass == null) {
+            System.out.println("Supabase saveQuestion class lookup response: class not found");
+            return null;
+        }
+
+        if (courseClass.getClassId() == null || courseClass.getClassId().length() == 0) {
+            System.out.println("Supabase saveQuestion class lookup response: class_id is missing");
+            return null;
+        }
+
+        System.out.println(
+                "Supabase saveQuestion class lookup response: classId="
+                        + courseClass.getClassId()
+                        + ", classCode="
+                        + courseClass.getClassCode()
+                        + ", className="
+                        + courseClass.getClassName());
+
         body = new StringBuilder();
         body.append("{");
-        body.append("\"class_code\":\"");
-        body.append(escapeJson(classCode));
+        body.append("\"class_id\":\"");
+        body.append(escapeJson(courseClass.getClassId()));
         body.append("\",");
-        body.append("\"type\":\"");
+        body.append("\"question_type\":\"");
         body.append(escapeJson(getQuestionType(question)));
         body.append("\",");
         body.append("\"prompt\":\"");
@@ -294,18 +352,20 @@ public class SupabaseService implements DataService {
         body.append("\",");
         body.append("\"correct_answer\":\"");
         body.append(escapeJson(getCorrectAnswer(question)));
-        body.append("\",");
-        body.append("\"points\":");
-        body.append(question.getPoints());
+        body.append("\"");
         body.append("}");
 
+        System.out.println("Supabase saveQuestion insert request body: " + body.toString());
+
         response = sendRequest(
-            "POST",
-            QUESTIONS_TABLE,
-            body.toString(),
-            "return=representation",
-            "application/json"
-        );
+                "POST",
+                QUESTIONS_TABLE,
+                body.toString(),
+                "return=representation",
+                "application/json");
+
+        System.out.println("Supabase saveQuestion response code: " + response.getStatusCode());
+        System.out.println("Supabase saveQuestion response body: " + response.getBody());
 
         if (!response.isSuccess()) {
             return null;
@@ -317,13 +377,21 @@ public class SupabaseService implements DataService {
             return null;
         }
 
-        return buildQuestionFromRow(rows.get(0));
+        savedQuestion = buildQuestionFromRow(rows.get(0));
+
+        if (savedQuestion != null) {
+            savedQuestion.setClassCode(classCode);
+            System.out.println("Supabase saveQuestion parsed questionId: " + savedQuestion.getQuestionId());
+        }
+
+        return savedQuestion;
 
     }
 
     @Override
     public ArrayList<Question> getQuestionsForClass(String classCode) {
 
+        CourseClass courseClass;
         String path;
         SupabaseResponse response;
         ArrayList<HashMap<String, String>> rows;
@@ -341,10 +409,20 @@ public class SupabaseService implements DataService {
             return questions;
         }
 
+        courseClass = findClassByCode(classCode);
+
+        if (courseClass == null) {
+            return questions;
+        }
+
+        if (courseClass.getClassId() == null || courseClass.getClassId().length() == 0) {
+            return questions;
+        }
+
         path = QUESTIONS_TABLE
-            + "?select=question_id,class_code,type,prompt,choice_a,choice_b,choice_c,choice_d,correct_answer,points"
-            + "&class_code=eq." + encodeQueryValue(classCode)
-            + "&order=question_id.asc";
+                + "?select=question_id,class_id,question_type,prompt,choice_a,choice_b,choice_c,choice_d,correct_answer"
+                + "&class_id=eq." + encodeQueryValue(courseClass.getClassId())
+                + "&order=question_id.asc";
 
         response = sendRequest("GET", path, null, null, "application/json");
 
@@ -358,6 +436,7 @@ public class SupabaseService implements DataService {
             question = buildQuestionFromRow(rows.get(i));
 
             if (question != null) {
+                question.setClassCode(classCode);
                 questions.add(question);
             }
         }
@@ -370,10 +449,11 @@ public class SupabaseService implements DataService {
     public Attempt saveAttempt(Attempt attempt) {
 
         StringBuilder body;
-        String classCode;
         SupabaseResponse response;
         ArrayList<HashMap<String, String>> rows;
         Attempt savedAttempt;
+        String studentId;
+        String questionId;
 
         if (!isConfigured()) {
             return null;
@@ -387,36 +467,41 @@ public class SupabaseService implements DataService {
             return null;
         }
 
-        classCode = attempt.getQuestion().getClassCode();
+        studentId = attempt.getStudent().getUserId();
+        questionId = attempt.getQuestion().getQuestionId();
+
+        if (studentId == null || studentId.length() == 0) {
+            return null;
+        }
+
+        if (questionId == null || questionId.length() == 0) {
+            return null;
+        }
 
         body = new StringBuilder();
         body.append("{");
-        body.append("\"class_code\":\"");
-        body.append(escapeJson(classCode));
+        body.append("\"student_id\":\"");
+        body.append(escapeJson(studentId));
         body.append("\",");
-        body.append("\"question_id\":");
-        body.append(attempt.getQuestion().getQuestionId());
-        body.append(",");
-        body.append("\"student_id\":");
-        body.append(attempt.getStudent().getUserId());
-        body.append(",");
-        body.append("\"submitted_answer\":\"");
+        body.append("\"question_id\":\"");
+        body.append(escapeJson(questionId));
+        body.append("\",");
+        body.append("\"answer\":\"");
         body.append(escapeJson(attempt.getSubmittedAnswer()));
         body.append("\",");
         body.append("\"correct\":");
         body.append(attempt.isCorrect());
-        body.append(",");
-        body.append("\"points_earned\":");
-        body.append(attempt.getPointsEarned());
         body.append("}");
 
         response = sendRequest(
-            "POST",
-            ATTEMPTS_TABLE,
-            body.toString(),
-            "return=representation",
-            "application/json"
-        );
+                "POST",
+                ATTEMPTS_TABLE,
+                body.toString(),
+                "return=representation",
+                "application/json");
+
+        System.out.println("Supabase saveAttempt response code: " + response.getStatusCode());
+        System.out.println("Supabase saveAttempt response body: " + response.getBody());
 
         if (!response.isSuccess()) {
             return null;
@@ -442,12 +527,19 @@ public class SupabaseService implements DataService {
     @Override
     public ArrayList<Attempt> getAttemptsForClass(String classCode) {
 
-        String path;
-        SupabaseResponse response;
-        ArrayList<HashMap<String, String>> rows;
+        ArrayList<Question> questions;
+        HashMap<String, Student> studentsById;
         ArrayList<Attempt> attempts;
+        Question question;
         Attempt attempt;
+        Student student;
+        ArrayList<HashMap<String, String>> rows;
+        SupabaseResponse response;
+        String path;
+        String questionId;
+        String studentId;
         int i;
+        int j;
 
         attempts = new ArrayList<Attempt>();
 
@@ -459,23 +551,70 @@ public class SupabaseService implements DataService {
             return attempts;
         }
 
-        path = ATTEMPTS_TABLE
-            + "?select=attempt_id,class_code,question_id,student_id,submitted_answer,correct,points_earned"
-            + "&class_code=eq." + encodeQueryValue(classCode)
-            + "&order=attempt_id.asc";
+        questions = getQuestionsForClass(classCode);
 
-        response = sendRequest("GET", path, null, null, "application/json");
-
-        if (!response.isSuccess()) {
+        if (questions.size() == 0) {
             return attempts;
         }
 
-        rows = parseJsonArray(response.getBody());
+        studentsById = new HashMap<String, Student>();
 
-        for (i = 0; i < rows.size(); i++) {
-            attempt = buildAttemptFromRow(rows.get(i));
+        for (i = 0; i < questions.size(); i++) {
+            question = questions.get(i);
 
-            if (attempt != null) {
+            if (question == null) {
+                continue;
+            }
+
+            questionId = question.getQuestionId();
+
+            if (questionId == null || questionId.length() == 0) {
+                continue;
+            }
+
+            path = ATTEMPTS_TABLE
+                    + "?select=attempt_id,student_id,question_id,answer,correct"
+                    + "&question_id=eq." + encodeQueryValue(questionId)
+                    + "&order=submitted_at.asc";
+
+            response = sendRequest("GET", path, null, null, "application/json");
+
+            if (!response.isSuccess()) {
+                continue;
+            }
+
+            rows = parseJsonArray(response.getBody());
+
+            for (j = 0; j < rows.size(); j++) {
+                attempt = buildAttemptFromRow(rows.get(j));
+
+                if (attempt == null) {
+                    continue;
+                }
+
+                attempt.setQuestion(question);
+                student = attempt.getStudent();
+
+                if (student != null) {
+                    studentId = student.getUserId();
+
+                    if (studentId != null && studentId.length() > 0) {
+                        student = studentsById.get(studentId);
+
+                        if (student == null) {
+                            student = loadStudentById(studentId);
+
+                            if (student != null) {
+                                studentsById.put(studentId, student);
+                            }
+                        }
+
+                        if (student != null) {
+                            attempt.setStudent(student);
+                        }
+                    }
+                }
+
                 attempts.add(attempt);
             }
         }
@@ -596,31 +735,27 @@ public class SupabaseService implements DataService {
 
     private User buildUserFromRow(HashMap<String, String> row) {
 
-        int userId;
+        String userId;
         String email;
         String password;
         String name;
         String role;
-        String instructorCode;
-        String studentNumber;
         Instructor instructor;
         Student student;
 
-        userId = getInt(row, "id", "user_id");
+        userId = getString(row, "user_id", "id");
         email = getString(row, "email");
         password = getString(row, "password");
         name = getString(row, "name");
         role = getString(row, "role");
-        instructorCode = getString(row, "instructor_code");
-        studentNumber = getString(row, "student_number");
 
         if ("instructor".equalsIgnoreCase(role)) {
-            instructor = new Instructor(userId, email, password, name, role, instructorCode);
+            instructor = new Instructor(userId, name, email, password);
             return instructor;
         }
 
         if ("student".equalsIgnoreCase(role)) {
-            student = new Student(userId, email, password, name, role, studentNumber, "");
+            student = new Student(userId, name, email, password);
             return student;
         }
 
@@ -631,17 +766,18 @@ public class SupabaseService implements DataService {
     private CourseClass buildCourseClassFromRow(HashMap<String, String> row) {
 
         CourseClass courseClass;
-        int instructorId;
+        String instructorId;
         Instructor instructor;
 
         courseClass = new CourseClass(
-            getString(row, "class_code", "code"),
-            getString(row, "class_name", "name")
-        );
+                getString(row, "class_code", "code"),
+                getString(row, "class_name", "name"));
 
-        instructorId = getInt(row, "instructor_id");
+        courseClass.setClassId(getString(row, "class_id"));
 
-        if (instructorId > 0) {
+        instructorId = getString(row, "instructor_id");
+
+        if (instructorId.length() > 0) {
             instructor = new Instructor();
             instructor.setUserId(instructorId);
             courseClass.setInstructor(instructor);
@@ -654,7 +790,7 @@ public class SupabaseService implements DataService {
     private Question buildQuestionFromRow(HashMap<String, String> row) {
 
         String type;
-        int questionId;
+        String questionId;
         int points;
         String classCode;
         String prompt;
@@ -663,8 +799,8 @@ public class SupabaseService implements DataService {
         ShortAnswerQuestion shortAnswerQuestion;
         ArrayList<String> choices;
 
-        type = getString(row, "type");
-        questionId = getInt(row, "question_id", "id");
+        type = getString(row, "question_type", "type");
+        questionId = getString(row, "question_id", "id");
         points = getInt(row, "points");
         classCode = getString(row, "class_code");
         prompt = getString(row, "prompt");
@@ -718,20 +854,64 @@ public class SupabaseService implements DataService {
 
         attempt = new Attempt();
         attempt.setAttemptId(getInt(row, "attempt_id", "id"));
-        attempt.setSubmittedAnswer(getString(row, "submitted_answer"));
+        attempt.setSubmittedAnswer(getString(row, "answer", "submitted_answer"));
         attempt.setCorrect(getBoolean(row, "correct"));
         attempt.setPointsEarned(getInt(row, "points_earned"));
 
         student = new Student();
-        student.setUserId(getInt(row, "student_id"));
+        student.setUserId(getString(row, "student_id"));
         attempt.setStudent(student);
 
         question = new ShortAnswerQuestion();
-        question.setQuestionId(getInt(row, "question_id"));
+        question.setQuestionId(getString(row, "question_id"));
         question.setClassCode(getString(row, "class_code"));
         attempt.setQuestion(question);
 
         return attempt;
+
+    }
+
+    private Student loadStudentById(String studentId) {
+
+        String path;
+        SupabaseResponse response;
+        ArrayList<HashMap<String, String>> rows;
+        HashMap<String, String> row;
+        Student student;
+
+        if (studentId == null || studentId.length() == 0) {
+            return null;
+        }
+
+        path = USERS_TABLE
+                + "?select=user_id,name,email,role"
+                + "&user_id=eq." + encodeQueryValue(studentId)
+                + "&limit=1";
+
+        response = sendRequest("GET", path, null, null, "application/json");
+
+        if (!response.isSuccess()) {
+            return null;
+        }
+
+        rows = parseJsonArray(response.getBody());
+
+        if (rows.size() == 0) {
+            return null;
+        }
+
+        row = rows.get(0);
+        student = new Student();
+        student.setUserId(getString(row, "user_id", "id"));
+        student.setName(getString(row, "name"));
+        student.setEmail(getString(row, "email"));
+        student.setRole(getString(row, "role"));
+
+        if (student.getRole() == null || student.getRole().length() == 0) {
+            student.setRole("student");
+        }
+
+        return student;
 
     }
 
@@ -794,7 +974,8 @@ public class SupabaseService implements DataService {
 
     }
 
-    private SupabaseResponse sendRequest(String method, String path, String requestBody, String preferHeader, String acceptHeader) {
+    private SupabaseResponse sendRequest(String method, String path, String requestBody, String preferHeader,
+            String acceptHeader) {
 
         HttpURLConnection connection;
         InputStream inputStream;
@@ -964,13 +1145,21 @@ public class SupabaseService implements DataService {
 
         }
 
-        public int getStatusCode() { return statusCode; }
+        public int getStatusCode() {
+            return statusCode;
+        }
 
-        public void setStatusCode(int statusCode) { this.statusCode = statusCode; }
+        public void setStatusCode(int statusCode) {
+            this.statusCode = statusCode;
+        }
 
-        public String getBody() { return body; }
+        public String getBody() {
+            return body;
+        }
 
-        public void setBody(String body) { this.body = body; }
+        public void setBody(String body) {
+            this.body = body;
+        }
 
     }
 
@@ -1219,12 +1408,20 @@ public class SupabaseService implements DataService {
 
     }
 
-    public String getProjectUrl() { return projectUrl; }
+    public String getProjectUrl() {
+        return projectUrl;
+    }
 
-    public void setProjectUrl(String projectUrl) { this.projectUrl = normalizeProjectUrl(projectUrl); }
+    public void setProjectUrl(String projectUrl) {
+        this.projectUrl = normalizeProjectUrl(projectUrl);
+    }
 
-    public String getApiKey() { return apiKey; }
+    public String getApiKey() {
+        return apiKey;
+    }
 
-    public void setApiKey(String apiKey) { this.apiKey = apiKey; }
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
 
 }

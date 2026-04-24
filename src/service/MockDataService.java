@@ -246,7 +246,7 @@ public class MockDataService implements DataService {
             return null;
         }
 
-        if (question.getQuestionId() <= 0) {
+        if (question.getQuestionId() == null || question.getQuestionId().length() == 0) {
             question.setQuestionId(nextQuestionId);
             nextQuestionId++;
         }

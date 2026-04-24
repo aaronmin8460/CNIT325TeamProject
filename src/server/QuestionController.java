@@ -16,7 +16,7 @@ public class QuestionController {
 
     private DataService dataService;
 
-    private HashMap<Integer, Question> questionsById;
+    private HashMap<String, Question> questionsById;
 
     public QuestionController() {
 
@@ -28,7 +28,7 @@ public class QuestionController {
 
         this.dataService = dataService;
 
-        this.questionsById = new HashMap<Integer, Question>();
+        this.questionsById = new HashMap<String, Question>();
 
     }
 
@@ -43,14 +43,20 @@ public class QuestionController {
         savedQuestion = dataService.saveQuestion(classCode, question);
 
         if (savedQuestion != null) {
-            questionsById.put(savedQuestion.getQuestionId(), savedQuestion);
+            if (savedQuestion.getQuestionId() != null && savedQuestion.getQuestionId().length() > 0) {
+                questionsById.put(savedQuestion.getQuestionId(), savedQuestion);
+            }
         }
 
         return savedQuestion;
 
     }
 
-    public Question findQuestionById(int questionId) {
+    public Question findQuestionById(String questionId) {
+
+        if (questionId == null) {
+            return null;
+        }
 
         return questionsById.get(questionId);
 
@@ -163,8 +169,8 @@ public class QuestionController {
 
     public void setDataService(DataService dataService) { this.dataService = dataService; }
 
-    public HashMap<Integer, Question> getQuestionsById() { return questionsById; }
+    public HashMap<String, Question> getQuestionsById() { return questionsById; }
 
-    public void setQuestionsById(HashMap<Integer, Question> questionsById) { this.questionsById = questionsById; }
+    public void setQuestionsById(HashMap<String, Question> questionsById) { this.questionsById = questionsById; }
 
 }
