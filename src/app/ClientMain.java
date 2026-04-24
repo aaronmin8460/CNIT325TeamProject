@@ -16,7 +16,7 @@ public class ClientMain {
 
     public ClientMain() {
 
-        this("127.0.0.1", 8189);
+        this("3.141.167.137", 8189);
 
     }
 
@@ -54,7 +54,7 @@ public class ClientMain {
         int port;
         ClientMain clientMain;
 
-        host = "127.0.0.1";
+        host = "3.141.167.137";
         port = 8189;
 
         if (args != null && args.length > 0) {
@@ -83,12 +83,20 @@ public class ClientMain {
 
     }
 
-    public String getHost() { return host; }
+    public String getHost() {
+        return host;
+    }
 
-    public void setHost(String host) { this.host = host; }
+    public void setHost(String host) {
+        this.host = host;
+    }
 
-    public int getPort() { return port; }
+    public int getPort() {
+        return port;
+    }
 
-    public void setPort(int port) { this.port = port; }
+    public void setPort(int port) {
+        this.port = port;
+    }
 
 }
