@@ -10,6 +10,7 @@ QuizTrack is a simple client/server quiz application built for a CNIT 325 style 
 - Real-time question push from instructor to connected students
 - Multiple-choice, true/false, and short-answer question types
 - In-memory demo data with `MockDataService`
+- Optional Supabase-backed storage with `HttpURLConnection`
 - Light internationalization with `ResourceBundle`
 
 ## Simple Directory Structure
@@ -62,17 +63,25 @@ mkdir -p out
 javac -d out $(find src -name "*.java" | sort)
 ```
 
-The GUI text files are in `src/i18n`, so keep `src` on the runtime classpath.
+The GUI text files are in `src/i18n`, so keep `src` on the runtime classpath for the client.
 
 On Windows Command Prompt, use `;` instead of `:` in the classpath examples below.
 
 ## How To Run The Server
 
+Mock mode:
+
 ```bash
-java -cp out:src app.ServerMain
+java -cp out app.ServerMain mock
 ```
 
-The server listens on port `8189`.
+Supabase mode:
+
+```bash
+java -cp out app.ServerMain supabase
+```
+
+If you do not pass an argument, the server uses mock mode. The server listens on port `8189`.
 
 ## How To Run The Client
 
@@ -108,7 +117,7 @@ java -cp out:src app.ClientMain
 ## How Real-Time Question Push Works
 
 - The instructor sends `CREATE_QUESTION|...` to the server.
-- The server saves the question in `MockDataService`.
+- The server saves the question in the active data service.
 - `QuizServer` keeps a `HashMap<String, ArrayList<ClientHandler>>` of connected students by class code.
 - The server immediately sends `QUESTION_PUSH|...` to every connected student handler in that class.
 - The student client listener thread receives the message and opens `QuestionDialog`.
@@ -125,16 +134,62 @@ java -cp out:src app.ClientMain
 
 AWS EC2 is not required for the current demo build. Later, EC2 can be used to host the server so multiple clients can connect from different machines on a shared public IP address instead of only running everything locally.
 
-## Supabase Later
+## Supabase Setup
 
-`SupabaseService` is only a placeholder right now. Later, it can replace or work alongside `MockDataService` to store:
+`SupabaseService` uses plain `HttpURLConnection` with no external libraries.
 
-- users
-- classes
-- questions
-- attempts
+### Environment Variables
 
-That would allow data to stay available after the program stops.
+Set these before starting `supabase` mode:
+
+```bash
+export SUPABASE_URL=https://your-project-ref.supabase.co
+export SUPABASE_SERVICE_KEY=your_service_role_key
+```
+
+Use the service key only on the server side. Do not put it in the client.
+
+### Headers Used
+
+Every request sends:
+
+- `apikey: SUPABASE_SERVICE_KEY`
+- `Authorization: Bearer SUPABASE_SERVICE_KEY`
+- `Content-Type: application/json`
+
+### Expected Tables
+
+The current `SupabaseService` expects these `public` tables:
+
+- `users`
+- `classes`
+- `class_memberships`
+- `questions`
+- `attempts`
+
+Expected columns:
+
+- `users`: `id`, `email`, `password`, `name`, `role`, `instructor_code`, `student_number`
+- `classes`: `class_code`, `class_name`, `instructor_id`
+- `class_memberships`: `id`, `class_code`, `student_id`
+- `questions`: `question_id`, `class_code`, `type`, `prompt`, `choice_a`, `choice_b`, `choice_c`, `choice_d`, `correct_answer`, `points`
+- `attempts`: `attempt_id`, `class_code`, `question_id`, `student_id`, `submitted_answer`, `correct`, `points_earned`
+
+If your Supabase table names or column names are different, update `SupabaseService.java` to match your schema.
+
+### Supabase Methods Connected
+
+These methods now call Supabase REST:
+
+- `login`
+- `createClass`
+- `joinClass`
+- `findClassByCode`
+- `saveQuestion`
+- `saveAttempt`
+- `getAttemptsForClass`
+
+`getQuestionsForClass` is also implemented so the service matches the current interface.
 
 ## Why Geo Location Was Removed
 
@@ -142,4 +197,4 @@ Geo location was intentionally removed from this rebuild. The earlier project id
 
 ## Why MockDataService Is Used Now
 
-`MockDataService` is the active data layer for demo and testing. It uses simple Java collections like `ArrayList` and `HashMap`, includes built-in test users, and makes it easy to run the project without setting up a real database or cloud service.
+`MockDataService` is still the easiest demo and testing option. It uses simple Java collections like `ArrayList` and `HashMap`, includes built-in test users, and lets the project run even when Supabase is not configured.
