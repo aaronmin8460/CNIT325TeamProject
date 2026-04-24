@@ -35,11 +35,17 @@ public class QuizServer {
 
     public QuizServer() {
 
-        this(8189, new MockDataService());
+        this(new MockDataService(), 8189);
 
     }
 
     public QuizServer(int port, DataService dataService) {
+
+        this(dataService, port);
+
+    }
+
+    public QuizServer(DataService dataService, int port) {
 
         this.port = port;
 

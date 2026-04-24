@@ -16,7 +16,7 @@ public class ClientMain {
 
     public ClientMain() {
 
-        this("localhost", 8189);
+        this("127.0.0.1", 8189);
 
     }
 
@@ -29,6 +29,8 @@ public class ClientMain {
     }
 
     public void start() {
+
+        System.out.println("Connecting to server " + host + ":" + port);
 
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -48,9 +50,36 @@ public class ClientMain {
 
     public static void main(String[] args) {
 
-        ClientMain clientMain = new ClientMain();
+        String host;
+        int port;
+        ClientMain clientMain;
+
+        host = "127.0.0.1";
+        port = 8189;
+
+        if (args != null && args.length > 0) {
+            host = args[0];
+        }
+
+        if (args != null && args.length > 1) {
+            port = parsePort(args[1], port);
+        }
+
+        clientMain = new ClientMain(host, port);
 
         clientMain.start();
+
+    }
+
+    private static int parsePort(String portText, int defaultPort) {
+
+        try {
+            return Integer.parseInt(portText);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid port: " + portText);
+            System.out.println("Using default port: " + defaultPort);
+            return defaultPort;
+        }
 
     }
 

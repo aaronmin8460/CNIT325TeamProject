@@ -32,7 +32,7 @@ public class ServerMain {
 
         QuizServer quizServer;
 
-        quizServer = new QuizServer(port, dataService);
+        quizServer = new QuizServer(dataService, port);
 
         quizServer.startServer();
 
@@ -41,13 +41,19 @@ public class ServerMain {
     public static void main(String[] args) {
 
         String mode;
+        int port;
         DataService dataService;
         ServerMain serverMain;
 
         mode = "mock";
+        port = 8189;
 
         if (args != null && args.length > 0) {
             mode = args[0];
+        }
+
+        if (args != null && args.length > 1) {
+            port = parsePort(args[1], port);
         }
 
         dataService = createDataService(mode);
@@ -57,9 +63,25 @@ public class ServerMain {
             return;
         }
 
-        serverMain = new ServerMain(8189, dataService);
+        System.out.println("QuizTrack server starting...");
+        System.out.println("Mode: " + mode);
+        System.out.println("Listening on port: " + port);
+
+        serverMain = new ServerMain(port, dataService);
 
         serverMain.start();
+
+    }
+
+    private static int parsePort(String portText, int defaultPort) {
+
+        try {
+            return Integer.parseInt(portText);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid port: " + portText);
+            System.out.println("Using default port: " + defaultPort);
+            return defaultPort;
+        }
 
     }
 

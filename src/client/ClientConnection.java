@@ -14,9 +14,9 @@ import javax.swing.SwingUtilities;
  */
 public class ClientConnection {
 
-    private String host;
+    private final String host;
 
-    private int port;
+    private final int port;
 
     private Socket socket;
 
@@ -36,7 +36,7 @@ public class ClientConnection {
 
     public ClientConnection() {
 
-        this("localhost", 8189);
+        this("127.0.0.1", 8189);
 
     }
 
@@ -291,11 +291,7 @@ public class ClientConnection {
 
     public String getHost() { return host; }
 
-    public void setHost(String host) { this.host = host; }
-
     public int getPort() { return port; }
-
-    public void setPort(int port) { this.port = port; }
 
     public Socket getSocket() { return socket; }
 
