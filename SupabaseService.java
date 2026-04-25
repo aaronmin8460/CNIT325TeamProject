@@ -1042,9 +1042,8 @@ public class SupabaseService implements DataService {
 
     private String readStream(InputStream inputStream) {
 
-        BufferedReader reader;
+        Scanner scanner;
         StringBuilder builder;
-        String line;
 
         if (inputStream == null) {
             return "";
@@ -1052,23 +1051,13 @@ public class SupabaseService implements DataService {
 
         builder = new StringBuilder();
 
-        try {
+        scanner = new Scanner(inputStream, StandardCharsets.UTF_8.name());
 
-            reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-            line = reader.readLine();
-
-            while (line != null) {
-                builder.append(line);
-                line = reader.readLine();
-            }
-
-            reader.close();
-
-        } catch (IOException e) {
-
-            return "";
-
+        while (scanner.hasNextLine()) {
+            builder.append(scanner.nextLine());
         }
+
+        scanner.close();
 
         return builder.toString();
 

@@ -42,9 +42,8 @@ Attempt.java
 DataService.java
 MockDataService.java
 SupabaseService.java
-resources/
-    messages_en.properties
-    messages_es.properties
+messages_en.properties
+messages_es.properties
 docs/
 README.md
 sources.txt
@@ -58,10 +57,6 @@ On macOS or Linux:
 ```bash
 javac *.java
 ```
-
-The GUI text files are in `resources`, so keep `resources` on the runtime classpath when running from compiled `.class` files.
-
-On Windows Command Prompt, use `;` instead of `:` in the classpath examples below.
 
 ## How To Run The Server
 
@@ -84,16 +79,10 @@ If you do not pass an argument, the server uses mock mode. The server listens on
 Open another terminal and run:
 
 ```bash
-java -cp ".:resources" ClientMain
+java ClientMain
 ```
 
-On Windows:
-
-```cmd
-java -cp ".;resources" ClientMain
-```
-
-If the `ResourceBundle` property files are included at the JAR root, `java -jar` will also work.
+The `messages_en.properties` and `messages_es.properties` files are in the project root, so they are available on the default classpath when you run from the project root.
 
 ## How To Build Executable JAR Files
 
@@ -106,13 +95,13 @@ javac *.java
 Create the client executable JAR:
 
 ```bash
-jar cfe QuizTrackClient.jar ClientMain *.class *.java -C resources . README.md sources.txt
+jar cfe QuizTrackClient.jar ClientMain *.class *.java *.properties README.md sources.txt docs
 ```
 
 Create the server executable JAR:
 
 ```bash
-jar cfe QuizTrackServer.jar ServerMain *.class *.java -C resources . README.md sources.txt
+jar cfe QuizTrackServer.jar ServerMain *.class *.java *.properties README.md sources.txt docs
 ```
 
 Run:
