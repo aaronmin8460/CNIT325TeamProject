@@ -1,12 +1,6 @@
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Scanner;
-
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
 /**
  * This class stores one connected client on the server side.
@@ -184,7 +178,8 @@ public class ClientHandler extends Thread {
             return;
         }
 
-        sendMessage("CLASS_CREATED|" + cleanText(courseClass.getClassName()) + "|" + cleanText(courseClass.getClassCode()));
+        sendMessage(
+                "CLASS_CREATED|" + cleanText(courseClass.getClassName()) + "|" + cleanText(courseClass.getClassCode()));
 
     }
 
@@ -572,40 +567,76 @@ public class ClientHandler extends Thread {
 
     }
 
-    public Socket getSocket() { return socket; }
+    public Socket getSocket() {
+        return socket;
+    }
 
-    public void setSocket(Socket socket) { this.socket = socket; }
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
 
-    public InputStream getInputStream() { return inputStream; }
+    public InputStream getInputStream() {
+        return inputStream;
+    }
 
-    public void setInputStream(InputStream inputStream) { this.inputStream = inputStream; }
+    public void setInputStream(InputStream inputStream) {
+        this.inputStream = inputStream;
+    }
 
-    public OutputStream getOutputStream() { return outputStream; }
+    public OutputStream getOutputStream() {
+        return outputStream;
+    }
 
-    public void setOutputStream(OutputStream outputStream) { this.outputStream = outputStream; }
+    public void setOutputStream(OutputStream outputStream) {
+        this.outputStream = outputStream;
+    }
 
-    public Scanner getScanner() { return scanner; }
+    public Scanner getScanner() {
+        return scanner;
+    }
 
-    public void setScanner(Scanner scanner) { this.scanner = scanner; }
+    public void setScanner(Scanner scanner) {
+        this.scanner = scanner;
+    }
 
-    public PrintWriter getWriter() { return writer; }
+    public PrintWriter getWriter() {
+        return writer;
+    }
 
-    public void setWriter(PrintWriter writer) { this.writer = writer; }
+    public void setWriter(PrintWriter writer) {
+        this.writer = writer;
+    }
 
-    public QuizServer getQuizServer() { return quizServer; }
+    public QuizServer getQuizServer() {
+        return quizServer;
+    }
 
-    public void setQuizServer(QuizServer quizServer) { this.quizServer = quizServer; }
+    public void setQuizServer(QuizServer quizServer) {
+        this.quizServer = quizServer;
+    }
 
-    public User getCurrentUser() { return currentUser; }
+    public User getCurrentUser() {
+        return currentUser;
+    }
 
-    public void setCurrentUser(User currentUser) { this.currentUser = currentUser; }
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
 
-    public String getCurrentClassCode() { return currentClassCode; }
+    public String getCurrentClassCode() {
+        return currentClassCode;
+    }
 
-    public void setCurrentClassCode(String currentClassCode) { this.currentClassCode = currentClassCode; }
+    public void setCurrentClassCode(String currentClassCode) {
+        this.currentClassCode = currentClassCode;
+    }
 
-    public boolean isRunning() { return running; }
+    public boolean isRunning() {
+        return running;
+    }
 
-    public void setRunning(boolean running) { this.running = running; }
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
 
 }

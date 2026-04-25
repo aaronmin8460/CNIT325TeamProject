@@ -1,5 +1,4 @@
-
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 /**
  * This class starts the client side of the quiz project.
@@ -12,7 +11,7 @@ public class ClientMain {
 
     public ClientMain() {
 
-        this("3.141.167.137", 8189);
+        this("127.0.0.1", 8189);
 
     }
 
@@ -50,7 +49,7 @@ public class ClientMain {
         int port;
         ClientMain clientMain;
 
-        host = "3.141.167.137";
+        host = "127.0.0.1";
         port = 8189;
 
         if (args != null && args.length > 0) {

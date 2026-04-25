@@ -1,21 +1,7 @@
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPasswordField;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
+import java.util.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
 /**
  * This class is the login window for the client.
@@ -321,44 +307,84 @@ public class LoginFrame extends JFrame implements ActionListener, ServerMessageH
 
     }
 
-    public ClientConnection getClientConnection() { return clientConnection; }
+    public ClientConnection getClientConnection() {
+        return clientConnection;
+    }
 
-    public void setClientConnection(ClientConnection clientConnection) { this.clientConnection = clientConnection; }
+    public void setClientConnection(ClientConnection clientConnection) {
+        this.clientConnection = clientConnection;
+    }
 
-    public ResourceBundle getMessages() { return messages; }
+    public ResourceBundle getMessages() {
+        return messages;
+    }
 
-    public void setMessages(ResourceBundle messages) { this.messages = messages; }
+    public void setMessages(ResourceBundle messages) {
+        this.messages = messages;
+    }
 
-    public JTextField getEmailField() { return emailField; }
+    public JTextField getEmailField() {
+        return emailField;
+    }
 
-    public void setEmailField(JTextField emailField) { this.emailField = emailField; }
+    public void setEmailField(JTextField emailField) {
+        this.emailField = emailField;
+    }
 
-    public JPasswordField getPasswordField() { return passwordField; }
+    public JPasswordField getPasswordField() {
+        return passwordField;
+    }
 
-    public void setPasswordField(JPasswordField passwordField) { this.passwordField = passwordField; }
+    public void setPasswordField(JPasswordField passwordField) {
+        this.passwordField = passwordField;
+    }
 
-    public JComboBox<String> getLanguageBox() { return languageBox; }
+    public JComboBox<String> getLanguageBox() {
+        return languageBox;
+    }
 
-    public void setLanguageBox(JComboBox<String> languageBox) { this.languageBox = languageBox; }
+    public void setLanguageBox(JComboBox<String> languageBox) {
+        this.languageBox = languageBox;
+    }
 
-    public JButton getLoginButton() { return loginButton; }
+    public JButton getLoginButton() {
+        return loginButton;
+    }
 
-    public void setLoginButton(JButton loginButton) { this.loginButton = loginButton; }
+    public void setLoginButton(JButton loginButton) {
+        this.loginButton = loginButton;
+    }
 
-    public JLabel getEmailLabel() { return emailLabel; }
+    public JLabel getEmailLabel() {
+        return emailLabel;
+    }
 
-    public void setEmailLabel(JLabel emailLabel) { this.emailLabel = emailLabel; }
+    public void setEmailLabel(JLabel emailLabel) {
+        this.emailLabel = emailLabel;
+    }
 
-    public JLabel getPasswordLabel() { return passwordLabel; }
+    public JLabel getPasswordLabel() {
+        return passwordLabel;
+    }
 
-    public void setPasswordLabel(JLabel passwordLabel) { this.passwordLabel = passwordLabel; }
+    public void setPasswordLabel(JLabel passwordLabel) {
+        this.passwordLabel = passwordLabel;
+    }
 
-    public JLabel getLanguageLabel() { return languageLabel; }
+    public JLabel getLanguageLabel() {
+        return languageLabel;
+    }
 
-    public void setLanguageLabel(JLabel languageLabel) { this.languageLabel = languageLabel; }
+    public void setLanguageLabel(JLabel languageLabel) {
+        this.languageLabel = languageLabel;
+    }
 
-    public JLabel getStatusLabel() { return statusLabel; }
+    public JLabel getStatusLabel() {
+        return statusLabel;
+    }
 
-    public void setStatusLabel(JLabel statusLabel) { this.statusLabel = statusLabel; }
+    public void setStatusLabel(JLabel statusLabel) {
+        this.statusLabel = statusLabel;
+    }
 
 }

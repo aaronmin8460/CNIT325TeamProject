@@ -1,21 +1,7 @@
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-
+import java.util.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
 /**
  * This class is a small dialog for showing one question.
@@ -207,41 +193,77 @@ public class QuestionDialog extends JDialog implements ActionListener {
 
     }
 
-    public Question getQuestion() { return question; }
+    public Question getQuestion() {
+        return question;
+    }
 
-    public void setQuestion(Question question) { this.question = question; }
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
 
-    public ClientConnection getClientConnection() { return clientConnection; }
+    public ClientConnection getClientConnection() {
+        return clientConnection;
+    }
 
-    public void setClientConnection(ClientConnection clientConnection) { this.clientConnection = clientConnection; }
+    public void setClientConnection(ClientConnection clientConnection) {
+        this.clientConnection = clientConnection;
+    }
 
-    public ResourceBundle getMessages() { return messages; }
+    public ResourceBundle getMessages() {
+        return messages;
+    }
 
-    public void setMessages(ResourceBundle messages) { this.messages = messages; }
+    public void setMessages(ResourceBundle messages) {
+        this.messages = messages;
+    }
 
-    public String getAnswerText() { return answerText; }
+    public String getAnswerText() {
+        return answerText;
+    }
 
-    public void setAnswerText(String answerText) { this.answerText = answerText; }
+    public void setAnswerText(String answerText) {
+        this.answerText = answerText;
+    }
 
-    public JTextField getAnswerField() { return answerField; }
+    public JTextField getAnswerField() {
+        return answerField;
+    }
 
-    public void setAnswerField(JTextField answerField) { this.answerField = answerField; }
+    public void setAnswerField(JTextField answerField) {
+        this.answerField = answerField;
+    }
 
-    public JComboBox<String> getAnswerBox() { return answerBox; }
+    public JComboBox<String> getAnswerBox() {
+        return answerBox;
+    }
 
-    public void setAnswerBox(JComboBox<String> answerBox) { this.answerBox = answerBox; }
+    public void setAnswerBox(JComboBox<String> answerBox) {
+        this.answerBox = answerBox;
+    }
 
-    public JButton getSubmitButton() { return submitButton; }
+    public JButton getSubmitButton() {
+        return submitButton;
+    }
 
-    public void setSubmitButton(JButton submitButton) { this.submitButton = submitButton; }
+    public void setSubmitButton(JButton submitButton) {
+        this.submitButton = submitButton;
+    }
 
-    public JTextArea getPromptArea() { return promptArea; }
+    public JTextArea getPromptArea() {
+        return promptArea;
+    }
 
-    public void setPromptArea(JTextArea promptArea) { this.promptArea = promptArea; }
+    public void setPromptArea(JTextArea promptArea) {
+        this.promptArea = promptArea;
+    }
 
-    public JLabel getStatusLabel() { return statusLabel; }
+    public JLabel getStatusLabel() {
+        return statusLabel;
+    }
 
-    public void setStatusLabel(JLabel statusLabel) { this.statusLabel = statusLabel; }
+    public void setStatusLabel(JLabel statusLabel) {
+        this.statusLabel = statusLabel;
+    }
 
     private String getText(String key, String defaultText) {
 

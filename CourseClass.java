@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * This class stores one course or class section.
@@ -37,28 +37,52 @@ public class CourseClass {
 
     }
 
-    public String getClassId() { return classId; }
+    public String getClassId() {
+        return classId;
+    }
 
-    public void setClassId(String classId) { this.classId = classId; }
+    public void setClassId(String classId) {
+        this.classId = classId;
+    }
 
-    public String getClassCode() { return classCode; }
+    public String getClassCode() {
+        return classCode;
+    }
 
-    public void setClassCode(String classCode) { this.classCode = classCode; }
+    public void setClassCode(String classCode) {
+        this.classCode = classCode;
+    }
 
-    public String getClassName() { return className; }
+    public String getClassName() {
+        return className;
+    }
 
-    public void setClassName(String className) { this.className = className; }
+    public void setClassName(String className) {
+        this.className = className;
+    }
 
-    public Instructor getInstructor() { return instructor; }
+    public Instructor getInstructor() {
+        return instructor;
+    }
 
-    public void setInstructor(Instructor instructor) { this.instructor = instructor; }
+    public void setInstructor(Instructor instructor) {
+        this.instructor = instructor;
+    }
 
-    public ArrayList<Student> getStudents() { return students; }
+    public ArrayList<Student> getStudents() {
+        return students;
+    }
 
-    public void setStudents(ArrayList<Student> students) { this.students = students; }
+    public void setStudents(ArrayList<Student> students) {
+        this.students = students;
+    }
 
-    public ArrayList<Question> getQuestions() { return questions; }
+    public ArrayList<Question> getQuestions() {
+        return questions;
+    }
 
-    public void setQuestions(ArrayList<Question> questions) { this.questions = questions; }
+    public void setQuestions(ArrayList<Question> questions) {
+        this.questions = questions;
+    }
 
 }

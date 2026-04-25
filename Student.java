@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * This class represents a student user.
@@ -17,7 +17,8 @@ public class Student extends User {
 
     }
 
-    public Student(String userId, String email, String password, String name, String role, String studentNumber, String classCode) {
+    public Student(String userId, String email, String password, String name, String role, String studentNumber,
+            String classCode) {
 
         super(userId, email, password, name, role);
 
@@ -29,7 +30,8 @@ public class Student extends User {
 
     }
 
-    public Student(int userId, String email, String password, String name, String role, String studentNumber, String classCode) {
+    public Student(int userId, String email, String password, String name, String role, String studentNumber,
+            String classCode) {
 
         this(String.valueOf(userId), email, password, name, role, studentNumber, classCode);
 
@@ -41,16 +43,28 @@ public class Student extends User {
 
     }
 
-    public String getStudentNumber() { return studentNumber; }
+    public String getStudentNumber() {
+        return studentNumber;
+    }
 
-    public void setStudentNumber(String studentNumber) { this.studentNumber = studentNumber; }
+    public void setStudentNumber(String studentNumber) {
+        this.studentNumber = studentNumber;
+    }
 
-    public String getClassCode() { return classCode; }
+    public String getClassCode() {
+        return classCode;
+    }
 
-    public void setClassCode(String classCode) { this.classCode = classCode; }
+    public void setClassCode(String classCode) {
+        this.classCode = classCode;
+    }
 
-    public ArrayList<Attempt> getAttempts() { return attempts; }
+    public ArrayList<Attempt> getAttempts() {
+        return attempts;
+    }
 
-    public void setAttempts(ArrayList<Attempt> attempts) { this.attempts = attempts; }
+    public void setAttempts(ArrayList<Attempt> attempts) {
+        this.attempts = attempts;
+    }
 
 }

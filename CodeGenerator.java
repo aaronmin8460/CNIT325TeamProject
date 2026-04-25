@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * This class stores simple class or join code information.
@@ -27,16 +27,28 @@ public class CodeGenerator {
 
     }
 
-    public String getPrefix() { return prefix; }
+    public String getPrefix() {
+        return prefix;
+    }
 
-    public void setPrefix(String prefix) { this.prefix = prefix; }
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
 
-    public int getNextNumber() { return nextNumber; }
+    public int getNextNumber() {
+        return nextNumber;
+    }
 
-    public void setNextNumber(int nextNumber) { this.nextNumber = nextNumber; }
+    public void setNextNumber(int nextNumber) {
+        this.nextNumber = nextNumber;
+    }
 
-    public ArrayList<String> getActiveCodes() { return activeCodes; }
+    public ArrayList<String> getActiveCodes() {
+        return activeCodes;
+    }
 
-    public void setActiveCodes(ArrayList<String> activeCodes) { this.activeCodes = activeCodes; }
+    public void setActiveCodes(ArrayList<String> activeCodes) {
+        this.activeCodes = activeCodes;
+    }
 
 }

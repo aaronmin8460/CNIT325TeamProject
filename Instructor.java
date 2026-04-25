@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * This class represents an instructor user.
@@ -37,12 +37,20 @@ public class Instructor extends User {
 
     }
 
-    public String getInstructorCode() { return instructorCode; }
+    public String getInstructorCode() {
+        return instructorCode;
+    }
 
-    public void setInstructorCode(String instructorCode) { this.instructorCode = instructorCode; }
+    public void setInstructorCode(String instructorCode) {
+        this.instructorCode = instructorCode;
+    }
 
-    public ArrayList<CourseClass> getClasses() { return classes; }
+    public ArrayList<CourseClass> getClasses() {
+        return classes;
+    }
 
-    public void setClasses(ArrayList<CourseClass> classes) { this.classes = classes; }
+    public void setClasses(ArrayList<CourseClass> classes) {
+        this.classes = classes;
+    }
 
 }

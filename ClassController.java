@@ -1,5 +1,4 @@
-import java.util.HashMap;
-
+import java.util.*;
 
 /**
  * This class stores class list information for the server.
@@ -80,12 +79,20 @@ public class ClassController {
 
     }
 
-    public DataService getDataService() { return dataService; }
+    public DataService getDataService() {
+        return dataService;
+    }
 
-    public void setDataService(DataService dataService) { this.dataService = dataService; }
+    public void setDataService(DataService dataService) {
+        this.dataService = dataService;
+    }
 
-    public HashMap<String, CourseClass> getClassesByCode() { return classesByCode; }
+    public HashMap<String, CourseClass> getClassesByCode() {
+        return classesByCode;
+    }
 
-    public void setClassesByCode(HashMap<String, CourseClass> classesByCode) { this.classesByCode = classesByCode; }
+    public void setClassesByCode(HashMap<String, CourseClass> classesByCode) {
+        this.classesByCode = classesByCode;
+    }
 
 }

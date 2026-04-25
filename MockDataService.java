@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import java.util.*;
 
 /**
  * This class stores simple in-memory data for testing.
@@ -67,23 +65,21 @@ public class MockDataService implements DataService {
         Student student;
 
         instructor = new Instructor(
-            1,
-            "instructor@test.com",
-            "pass123",
-            "Test Instructor",
-            "instructor",
-            "INS1001"
-        );
+                1,
+                "instructor@test.com",
+                "pass123",
+                "Test Instructor",
+                "instructor",
+                "INS1001");
 
         student = new Student(
-            2,
-            "student@test.com",
-            "pass123",
-            "Test Student",
-            "student",
-            "STU1001",
-            ""
-        );
+                2,
+                "student@test.com",
+                "pass123",
+                "Test Student",
+                "student",
+                "STU1001",
+                "");
 
         users.add(instructor);
         users.add(student);
@@ -413,40 +409,76 @@ public class MockDataService implements DataService {
 
     }
 
-    public void setUsers(ArrayList<User> users) { this.users = users; }
+    public void setUsers(ArrayList<User> users) {
+        this.users = users;
+    }
 
-    public void setClasses(ArrayList<CourseClass> classes) { this.classes = classes; }
+    public void setClasses(ArrayList<CourseClass> classes) {
+        this.classes = classes;
+    }
 
-    public HashMap<String, User> getUsersByEmail() { return usersByEmail; }
+    public HashMap<String, User> getUsersByEmail() {
+        return usersByEmail;
+    }
 
-    public void setUsersByEmail(HashMap<String, User> usersByEmail) { this.usersByEmail = usersByEmail; }
+    public void setUsersByEmail(HashMap<String, User> usersByEmail) {
+        this.usersByEmail = usersByEmail;
+    }
 
-    public HashMap<String, CourseClass> getClassesByCode() { return classesByCode; }
+    public HashMap<String, CourseClass> getClassesByCode() {
+        return classesByCode;
+    }
 
-    public void setClassesByCode(HashMap<String, CourseClass> classesByCode) { this.classesByCode = classesByCode; }
+    public void setClassesByCode(HashMap<String, CourseClass> classesByCode) {
+        this.classesByCode = classesByCode;
+    }
 
-    public HashMap<String, ArrayList<Student>> getClassMemberships() { return classMemberships; }
+    public HashMap<String, ArrayList<Student>> getClassMemberships() {
+        return classMemberships;
+    }
 
-    public void setClassMemberships(HashMap<String, ArrayList<Student>> classMemberships) { this.classMemberships = classMemberships; }
+    public void setClassMemberships(HashMap<String, ArrayList<Student>> classMemberships) {
+        this.classMemberships = classMemberships;
+    }
 
-    public ArrayList<User> getUsers() { return users; }
+    public ArrayList<User> getUsers() {
+        return users;
+    }
 
-    public ArrayList<CourseClass> getClasses() { return classes; }
+    public ArrayList<CourseClass> getClasses() {
+        return classes;
+    }
 
-    public ArrayList<Question> getQuestions() { return questions; }
+    public ArrayList<Question> getQuestions() {
+        return questions;
+    }
 
-    public void setQuestions(ArrayList<Question> questions) { this.questions = questions; }
+    public void setQuestions(ArrayList<Question> questions) {
+        this.questions = questions;
+    }
 
-    public HashMap<String, ArrayList<Question>> getQuestionsByClassCode() { return questionsByClassCode; }
+    public HashMap<String, ArrayList<Question>> getQuestionsByClassCode() {
+        return questionsByClassCode;
+    }
 
-    public void setQuestionsByClassCode(HashMap<String, ArrayList<Question>> questionsByClassCode) { this.questionsByClassCode = questionsByClassCode; }
+    public void setQuestionsByClassCode(HashMap<String, ArrayList<Question>> questionsByClassCode) {
+        this.questionsByClassCode = questionsByClassCode;
+    }
 
-    public ArrayList<Attempt> getAttempts() { return attempts; }
+    public ArrayList<Attempt> getAttempts() {
+        return attempts;
+    }
 
-    public void setAttempts(ArrayList<Attempt> attempts) { this.attempts = attempts; }
+    public void setAttempts(ArrayList<Attempt> attempts) {
+        this.attempts = attempts;
+    }
 
-    public HashMap<String, ArrayList<Attempt>> getAttemptsByClassCode() { return attemptsByClassCode; }
+    public HashMap<String, ArrayList<Attempt>> getAttemptsByClassCode() {
+        return attemptsByClassCode;
+    }
 
-    public void setAttemptsByClassCode(HashMap<String, ArrayList<Attempt>> attemptsByClassCode) { this.attemptsByClassCode = attemptsByClassCode; }
+    public void setAttemptsByClassCode(HashMap<String, ArrayList<Attempt>> attemptsByClassCode) {
+        this.attemptsByClassCode = attemptsByClassCode;
+    }
 
 }

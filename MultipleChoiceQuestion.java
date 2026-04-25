@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * This class stores a multiple-choice question.
@@ -35,12 +35,20 @@ public class MultipleChoiceQuestion extends Question {
 
     }
 
-    public ArrayList<String> getChoices() { return choices; }
+    public ArrayList<String> getChoices() {
+        return choices;
+    }
 
-    public void setChoices(ArrayList<String> choices) { this.choices = choices; }
+    public void setChoices(ArrayList<String> choices) {
+        this.choices = choices;
+    }
 
-    public String getCorrectAnswer() { return correctAnswer; }
+    public String getCorrectAnswer() {
+        return correctAnswer;
+    }
 
-    public void setCorrectAnswer(String correctAnswer) { this.correctAnswer = correctAnswer; }
+    public void setCorrectAnswer(String correctAnswer) {
+        this.correctAnswer = correctAnswer;
+    }
 
 }

@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import java.util.*;
 
 /**
  * This class stores question information for the server.
@@ -158,12 +156,20 @@ public class QuestionController {
 
     }
 
-    public DataService getDataService() { return dataService; }
+    public DataService getDataService() {
+        return dataService;
+    }
 
-    public void setDataService(DataService dataService) { this.dataService = dataService; }
+    public void setDataService(DataService dataService) {
+        this.dataService = dataService;
+    }
 
-    public HashMap<String, Question> getQuestionsById() { return questionsById; }
+    public HashMap<String, Question> getQuestionsById() {
+        return questionsById;
+    }
 
-    public void setQuestionsById(HashMap<String, Question> questionsById) { this.questionsById = questionsById; }
+    public void setQuestionsById(HashMap<String, Question> questionsById) {
+        this.questionsById = questionsById;
+    }
 
 }

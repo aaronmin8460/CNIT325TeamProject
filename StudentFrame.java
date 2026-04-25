@@ -1,20 +1,7 @@
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JTextArea;
-
+import java.util.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
 /**
  * This class is the main window for a student user.
@@ -356,32 +343,60 @@ public class StudentFrame extends JFrame implements ActionListener, ServerMessag
 
     }
 
-    public Student getStudent() { return student; }
+    public Student getStudent() {
+        return student;
+    }
 
-    public void setStudent(Student student) { this.student = student; }
+    public void setStudent(Student student) {
+        this.student = student;
+    }
 
-    public ClientConnection getClientConnection() { return clientConnection; }
+    public ClientConnection getClientConnection() {
+        return clientConnection;
+    }
 
-    public void setClientConnection(ClientConnection clientConnection) { this.clientConnection = clientConnection; }
+    public void setClientConnection(ClientConnection clientConnection) {
+        this.clientConnection = clientConnection;
+    }
 
-    public ResourceBundle getMessages() { return messages; }
+    public ResourceBundle getMessages() {
+        return messages;
+    }
 
-    public void setMessages(ResourceBundle messages) { this.messages = messages; }
+    public void setMessages(ResourceBundle messages) {
+        this.messages = messages;
+    }
 
-    public JTextField getClassCodeField() { return classCodeField; }
+    public JTextField getClassCodeField() {
+        return classCodeField;
+    }
 
-    public void setClassCodeField(JTextField classCodeField) { this.classCodeField = classCodeField; }
+    public void setClassCodeField(JTextField classCodeField) {
+        this.classCodeField = classCodeField;
+    }
 
-    public JButton getJoinClassButton() { return joinClassButton; }
+    public JButton getJoinClassButton() {
+        return joinClassButton;
+    }
 
-    public void setJoinClassButton(JButton joinClassButton) { this.joinClassButton = joinClassButton; }
+    public void setJoinClassButton(JButton joinClassButton) {
+        this.joinClassButton = joinClassButton;
+    }
 
-    public JTextArea getStatusTextArea() { return statusTextArea; }
+    public JTextArea getStatusTextArea() {
+        return statusTextArea;
+    }
 
-    public void setStatusTextArea(JTextArea statusTextArea) { this.statusTextArea = statusTextArea; }
+    public void setStatusTextArea(JTextArea statusTextArea) {
+        this.statusTextArea = statusTextArea;
+    }
 
-    public QuestionDialog getQuestionDialog() { return questionDialog; }
+    public QuestionDialog getQuestionDialog() {
+        return questionDialog;
+    }
 
-    public void setQuestionDialog(QuestionDialog questionDialog) { this.questionDialog = questionDialog; }
+    public void setQuestionDialog(QuestionDialog questionDialog) {
+        this.questionDialog = questionDialog;
+    }
 
 }

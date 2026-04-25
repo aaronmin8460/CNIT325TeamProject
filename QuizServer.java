@@ -1,9 +1,6 @@
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
 /**
  * This class stores the main server objects for the quiz system.
@@ -247,35 +244,66 @@ public class QuizServer {
 
     }
 
-    public int getPort() { return port; }
+    public int getPort() {
+        return port;
+    }
 
-    public void setPort(int port) { this.port = port; }
+    public void setPort(int port) {
+        this.port = port;
+    }
 
-    public ServerSocket getServerSocket() { return serverSocket; }
+    public ServerSocket getServerSocket() {
+        return serverSocket;
+    }
 
-    public void setServerSocket(ServerSocket serverSocket) { this.serverSocket = serverSocket; }
+    public void setServerSocket(ServerSocket serverSocket) {
+        this.serverSocket = serverSocket;
+    }
 
-    public ArrayList<ClientHandler> getClientHandlers() { return clientHandlers; }
+    public ArrayList<ClientHandler> getClientHandlers() {
+        return clientHandlers;
+    }
 
-    public void setClientHandlers(ArrayList<ClientHandler> clientHandlers) { this.clientHandlers = clientHandlers; }
+    public void setClientHandlers(ArrayList<ClientHandler> clientHandlers) {
+        this.clientHandlers = clientHandlers;
+    }
 
-    public HashMap<String, ArrayList<ClientHandler>> getConnectedStudentsByClassCode() { return connectedStudentsByClassCode; }
+    public HashMap<String, ArrayList<ClientHandler>> getConnectedStudentsByClassCode() {
+        return connectedStudentsByClassCode;
+    }
 
-    public void setConnectedStudentsByClassCode(HashMap<String, ArrayList<ClientHandler>> connectedStudentsByClassCode) { this.connectedStudentsByClassCode = connectedStudentsByClassCode; }
+    public void setConnectedStudentsByClassCode(
+            HashMap<String, ArrayList<ClientHandler>> connectedStudentsByClassCode) {
+        this.connectedStudentsByClassCode = connectedStudentsByClassCode;
+    }
 
-    public AuthController getAuthController() { return authController; }
+    public AuthController getAuthController() {
+        return authController;
+    }
 
-    public void setAuthController(AuthController authController) { this.authController = authController; }
+    public void setAuthController(AuthController authController) {
+        this.authController = authController;
+    }
 
-    public ClassController getClassController() { return classController; }
+    public ClassController getClassController() {
+        return classController;
+    }
 
-    public void setClassController(ClassController classController) { this.classController = classController; }
+    public void setClassController(ClassController classController) {
+        this.classController = classController;
+    }
 
-    public QuestionController getQuestionController() { return questionController; }
+    public QuestionController getQuestionController() {
+        return questionController;
+    }
 
-    public void setQuestionController(QuestionController questionController) { this.questionController = questionController; }
+    public void setQuestionController(QuestionController questionController) {
+        this.questionController = questionController;
+    }
 
-    public DataService getDataService() { return dataService; }
+    public DataService getDataService() {
+        return dataService;
+    }
 
     public void setDataService(DataService dataService) {
 
@@ -289,8 +317,12 @@ public class QuizServer {
 
     }
 
-    public boolean isRunning() { return running; }
+    public boolean isRunning() {
+        return running;
+    }
 
-    public void setRunning(boolean running) { this.running = running; }
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
 
 }

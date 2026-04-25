@@ -1,11 +1,8 @@
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.Scanner;
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 /**
  * This class stores client socket connection information.
@@ -177,7 +174,8 @@ public class ClientConnection {
 
     }
 
-    public void sendCreateQuestion(String classCode, String type, String prompt, String choiceA, String choiceB, String choiceC, String choiceD, String correctAnswer) {
+    public void sendCreateQuestion(String classCode, String type, String prompt, String choiceA, String choiceB,
+            String choiceC, String choiceD, String correctAnswer) {
 
         StringBuilder builder;
 
@@ -287,41 +285,77 @@ public class ClientConnection {
 
     }
 
-    public String getHost() { return host; }
+    public String getHost() {
+        return host;
+    }
 
-    public int getPort() { return port; }
+    public int getPort() {
+        return port;
+    }
 
-    public Socket getSocket() { return socket; }
+    public Socket getSocket() {
+        return socket;
+    }
 
-    public void setSocket(Socket socket) { this.socket = socket; }
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
 
-    public InputStream getInputStream() { return inputStream; }
+    public InputStream getInputStream() {
+        return inputStream;
+    }
 
-    public void setInputStream(InputStream inputStream) { this.inputStream = inputStream; }
+    public void setInputStream(InputStream inputStream) {
+        this.inputStream = inputStream;
+    }
 
-    public OutputStream getOutputStream() { return outputStream; }
+    public OutputStream getOutputStream() {
+        return outputStream;
+    }
 
-    public void setOutputStream(OutputStream outputStream) { this.outputStream = outputStream; }
+    public void setOutputStream(OutputStream outputStream) {
+        this.outputStream = outputStream;
+    }
 
-    public Scanner getScanner() { return scanner; }
+    public Scanner getScanner() {
+        return scanner;
+    }
 
-    public void setScanner(Scanner scanner) { this.scanner = scanner; }
+    public void setScanner(Scanner scanner) {
+        this.scanner = scanner;
+    }
 
-    public PrintWriter getWriter() { return writer; }
+    public PrintWriter getWriter() {
+        return writer;
+    }
 
-    public void setWriter(PrintWriter writer) { this.writer = writer; }
+    public void setWriter(PrintWriter writer) {
+        this.writer = writer;
+    }
 
-    public Thread getListenerThread() { return listenerThread; }
+    public Thread getListenerThread() {
+        return listenerThread;
+    }
 
-    public void setListenerThread(Thread listenerThread) { this.listenerThread = listenerThread; }
+    public void setListenerThread(Thread listenerThread) {
+        this.listenerThread = listenerThread;
+    }
 
-    public boolean isListening() { return listening; }
+    public boolean isListening() {
+        return listening;
+    }
 
-    public void setListening(boolean listening) { this.listening = listening; }
+    public void setListening(boolean listening) {
+        this.listening = listening;
+    }
 
-    public ServerMessageHandler getMessageHandler() { return messageHandler; }
+    public ServerMessageHandler getMessageHandler() {
+        return messageHandler;
+    }
 
-    public void setMessageHandler(ServerMessageHandler messageHandler) { this.messageHandler = messageHandler; }
+    public void setMessageHandler(ServerMessageHandler messageHandler) {
+        this.messageHandler = messageHandler;
+    }
 
     public boolean isConnected() {
 
