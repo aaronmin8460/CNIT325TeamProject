@@ -16,42 +16,39 @@ QuizTrack is a simple client/server quiz application built for a CNIT 325 style 
 ## Simple Directory Structure
 
 ```text
-src/
-  app/
-    ClientMain.java
-    ServerMain.java
-  client/
-    ClientConnection.java
-    InstructorFrame.java
-    LoginFrame.java
-    QuestionDialog.java
-    ServerMessageHandler.java
-    StudentFrame.java
-  server/
-    QuizServer.java
-    ClientHandler.java
-    AuthController.java
-    ClassController.java
-    QuestionController.java
-    CodeGenerator.java
-  model/
-    User.java
-    Student.java
-    Instructor.java
-    CourseClass.java
-    Question.java
-    MultipleChoiceQuestion.java
-    TrueFalseQuestion.java
-    ShortAnswerQuestion.java
-    Attempt.java
-  service/
-    DataService.java
-    MockDataService.java
-    SupabaseService.java
-  i18n/
+ClientMain.java
+ServerMain.java
+ClientConnection.java
+LoginFrame.java
+InstructorFrame.java
+StudentFrame.java
+QuestionDialog.java
+ServerMessageHandler.java
+QuizServer.java
+ClientHandler.java
+AuthController.java
+ClassController.java
+QuestionController.java
+CodeGenerator.java
+User.java
+Student.java
+Instructor.java
+CourseClass.java
+Question.java
+MultipleChoiceQuestion.java
+TrueFalseQuestion.java
+ShortAnswerQuestion.java
+Attempt.java
+DataService.java
+MockDataService.java
+SupabaseService.java
+resources/
     messages_en.properties
     messages_es.properties
+docs/
 README.md
+sources.txt
+.gitignore
 ```
 
 ## How To Compile From Command Line
@@ -59,11 +56,10 @@ README.md
 On macOS or Linux:
 
 ```bash
-mkdir -p out
-javac -d out $(find src -name "*.java" | sort)
+javac *.java
 ```
 
-The GUI text files are in `src/i18n`, so keep `src` on the runtime classpath for the client.
+The GUI text files are in `resources`, so keep `resources` on the runtime classpath when running from compiled `.class` files.
 
 On Windows Command Prompt, use `;` instead of `:` in the classpath examples below.
 
@@ -72,13 +68,13 @@ On Windows Command Prompt, use `;` instead of `:` in the classpath examples belo
 Mock mode:
 
 ```bash
-java -cp out app.ServerMain mock
+java ServerMain mock
 ```
 
 Supabase mode:
 
 ```bash
-java -cp out app.ServerMain supabase
+java ServerMain supabase
 ```
 
 If you do not pass an argument, the server uses mock mode. The server listens on port `8189`.
@@ -88,7 +84,42 @@ If you do not pass an argument, the server uses mock mode. The server listens on
 Open another terminal and run:
 
 ```bash
-java -cp out:src app.ClientMain
+java -cp ".:resources" ClientMain
+```
+
+On Windows:
+
+```cmd
+java -cp ".;resources" ClientMain
+```
+
+If the `ResourceBundle` property files are included at the JAR root, `java -jar` will also work.
+
+## How To Build Executable JAR Files
+
+Compile:
+
+```bash
+javac *.java
+```
+
+Create the client executable JAR:
+
+```bash
+jar cfe QuizTrackClient.jar ClientMain *.class *.java -C resources . README.md sources.txt
+```
+
+Create the server executable JAR:
+
+```bash
+jar cfe QuizTrackServer.jar ServerMain *.class *.java -C resources . README.md sources.txt
+```
+
+Run:
+
+```bash
+java -jar QuizTrackServer.jar mock
+java -jar QuizTrackClient.jar
 ```
 
 ## Test Accounts
