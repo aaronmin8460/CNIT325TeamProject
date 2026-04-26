@@ -11,7 +11,7 @@ public class ClientMain {
 
     public ClientMain() {
 
-        this("127.0.0.1", 8189);
+        this("3.133.85.140", 8189);
 
     }
 
@@ -49,7 +49,7 @@ public class ClientMain {
         int port;
         ClientMain clientMain;
 
-        host = "127.0.0.1";
+        host = "3.133.85.140";
         port = 8189;
 
         if (args != null && args.length > 0) {

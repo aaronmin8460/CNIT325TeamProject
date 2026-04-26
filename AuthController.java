@@ -1,5 +1,4 @@
-import java.util.HashMap;
-
+import java.util.*;
 
 /**
  * This class stores login and user lookup information for the server.
@@ -42,12 +41,20 @@ public class AuthController {
 
     }
 
-    public DataService getDataService() { return dataService; }
+    public DataService getDataService() {
+        return dataService;
+    }
 
-    public void setDataService(DataService dataService) { this.dataService = dataService; }
+    public void setDataService(DataService dataService) {
+        this.dataService = dataService;
+    }
 
-    public HashMap<String, User> getUsersByEmail() { return usersByEmail; }
+    public HashMap<String, User> getUsersByEmail() {
+        return usersByEmail;
+    }
 
-    public void setUsersByEmail(HashMap<String, User> usersByEmail) { this.usersByEmail = usersByEmail; }
+    public void setUsersByEmail(HashMap<String, User> usersByEmail) {
+        this.usersByEmail = usersByEmail;
+    }
 
 }
