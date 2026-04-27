@@ -1,58 +1,8 @@
 # QuizTrack
 
-QuizTrack is a simple client/server quiz application built for a CNIT 325 style project. It uses plain Java, Swing, sockets, `Scanner`, and `PrintWriter` so the code stays close to lab examples and is easy for a student to follow.
-
-## Main Features
-
-- Instructor and student login with test accounts
-- Swing GUI for login, instructor controls, student controls, and question dialog
-- Text-based socket protocol using commands separated by `|`
-- Real-time question push from instructor to connected students
-- Multiple-choice, true/false, and short-answer question types
-- In-memory demo data with `MockDataService`
-- Optional Supabase-backed storage with `HttpURLConnection`
-- Light internationalization with `ResourceBundle`
-
-## Simple Directory Structure
-
-```text
-ClientMain.java
-ServerMain.java
-ClientConnection.java
-LoginFrame.java
-InstructorFrame.java
-StudentFrame.java
-QuestionDialog.java
-ServerMessageHandler.java
-QuizServer.java
-ClientHandler.java
-AuthController.java
-ClassController.java
-QuestionController.java
-CodeGenerator.java
-User.java
-Student.java
-Instructor.java
-CourseClass.java
-Question.java
-MultipleChoiceQuestion.java
-TrueFalseQuestion.java
-ShortAnswerQuestion.java
-Attempt.java
-DataService.java
-MockDataService.java
-SupabaseService.java
-messages_en.properties
-messages_es.properties
-docs/
-README.md
-sources.txt
-.gitignore
-```
+QuizTrack is a simple client/server quiz application. The program provides instructor and students' live quiz interaction.
 
 ## How To Compile From Command Line
-
-On macOS or Linux:
 
 ```bash
 javac *.java
@@ -63,7 +13,7 @@ javac *.java
 Mock mode:
 
 ```bash
-java ServerMain mock
+java ServerMain mock 8189
 ```
 
 Supabase mode:
@@ -78,37 +28,16 @@ If you do not pass an argument, the server uses mock mode. The server listens on
 
 Open another terminal and run:
 
+Mock mode:
+
 ```bash
-java ClientMain
+java ClientMain 127.0.0.1 8189
 ```
 
-The `messages_en.properties` and `messages_es.properties` files are in the project root, so they are available on the default classpath when you run from the project root.
-
-## How To Build Executable JAR Files
-
-Compile:
+Actual server running mode:
 
 ```bash
-javac *.java
-```
-
-Create the client executable JAR:
-
-```bash
-jar cfe QuizTrackClient.jar ClientMain *.class *.java *.properties README.md sources.txt docs
-```
-
-Create the server executable JAR:
-
-```bash
-jar cfe QuizTrackServer.jar ServerMain *.class *.java *.properties README.md sources.txt docs
-```
-
-Run:
-
-```bash
-java -jar QuizTrackServer.jar mock
-java -jar QuizTrackClient.jar
+java ClinetMain YOUR_EC2_IP 8189
 ```
 
 ## Test Accounts
@@ -131,84 +60,70 @@ java -jar QuizTrackClient.jar
 1. Log in with the student account.
 2. Enter the class code and click `Join Class`.
 3. Wait for the instructor to create a question.
-4. When the server pushes a question, a dialog opens automatically.
-5. Submit the answer and read the result message in the student window.
-
-## How Real-Time Question Push Works
-
-- The instructor sends `CREATE_QUESTION|...` to the server.
-- The server saves the question in the active data service.
-- `QuizServer` keeps a `HashMap<String, ArrayList<ClientHandler>>` of connected students by class code.
-- The server immediately sends `QUESTION_PUSH|...` to every connected student handler in that class.
-- The student client listener thread receives the message and opens `QuestionDialog`.
+4. When the server pushes a question, a dialog opens.
+5. Submit the answer and read the result message in the student JTextArea.
 
 ## Internationalization
 
-- The GUI uses `ResourceBundle`.
 - `messages_en.properties` is the default language file.
-- `messages_es.properties` provides simple Spanish labels.
+- `messages_es.properties` provides Spanish labels.
 - The login window has a small language `JComboBox` so the user can switch between English and Spanish before logging in.
-- The program still falls back to English text if the resource files are not found.
 
-## AWS EC2 Later
+## AWS EC2 Setup
 
-AWS EC2 is not required for the current demo build. Later, EC2 can be used to host the server so multiple clients can connect from different machines on a shared public IP address instead of only running everything locally.
+AWS EC2 is not required for the demo build which use local ip address.
+EC2 can be used to host the server so multiple clients can connect from different machines on a shared public IP address instead of only running everything locally.
+
+1. Create a new AWS EC2 instance with Amazon Linux
+2. Add security gruop as following configuration
+
+```bash
+Custom TCP
+Port: 8189
+Source: 0.0.0.0/0
+```
+
+3. Connect to the EC2 via following command with the .pem key you created when you launch the instance
+
+```bash
+chmod 400 YOUR_KEY.pem
+ssh -i YOUR_KEY.pem ec2-user@YOUR_EC2_IP
+```
+
+4. Install Java and Git on EC2
+
+```bash
+sudo yum update -y
+sudo yum install git -y
+sudo yum install java-17-amazon-corretto-devel -y
+```
+
+5. Pull Github Repository
+
+```bash
+git clone https://github.com/aaronmin8460/CNIT325TeamProject.git
+cd CNIT325TeamProject
+```
+
+6. Start your Server
+
+Mock mode:
+
+```bash
+java ServerMain mock
+```
+
+Supabase mode:
+
+```bash
+java ServerMain supabase
+```
 
 ## Supabase Setup
 
-`SupabaseService` uses plain `HttpURLConnection` with no external libraries.
-
-### Environment Variables
-
-Set these before starting `supabase` mode:
+Before starting the `supabase` mode, create `supabase.properties` file and put the following lines.
 
 ```bash
 export SUPABASE_URL=https://your-project-ref.supabase.co
 export SUPABASE_SERVICE_KEY=your_service_role_key
 ```
-
-Use the service key only on the server side. Do not put it in the client.
-
-### Headers Used
-
-Every request sends:
-
-- `apikey: SUPABASE_SERVICE_KEY`
-- `Authorization: Bearer SUPABASE_SERVICE_KEY`
-- `Content-Type: application/json`
-
-### Expected Tables
-
-The current `SupabaseService` expects these `public` tables:
-
-- `users`
-- `classes`
-- `class_members`
-- `questions`
-- `attempts`
-
-Expected columns:
-
-- `users`: `user_id`, `name`, `email`, `password`, `role`
-- `classes`: `class_id`, `instructor_id`, `class_name`, `class_code`, `created_at`
-- `class_members`: `class_id`, `student_id`, `joined_at`
-- `questions`: `question_id`, `class_code`, `type`, `prompt`, `choice_a`, `choice_b`, `choice_c`, `choice_d`, `correct_answer`, `points`
-- `attempts`: `attempt_id`, `class_code`, `question_id`, `student_id`, `submitted_answer`, `correct`, `points_earned`
-
-For Supabase mode, `user_id`, `instructor_id`, and `student_id` can be UUID strings.
-
-If your Supabase table names or column names are different, update `SupabaseService.java` to match your schema.
-
-### Supabase Methods Connected
-
-These methods now call Supabase REST:
-
-- `login`
-- `createClass`
-- `joinClass`
-- `findClassByCode`
-- `saveQuestion`
-- `saveAttempt`
-- `getAttemptsForClass`
-
-`getQuestionsForClass` is also implemented so the service matches the current interface.
